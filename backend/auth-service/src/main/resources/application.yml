@@ -2,13 +2,18 @@ server:
   port: ${PORT:8081}
 
 spring:
+  profiles:
+    active: local
+
   application:
     name: auth-service
+
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/chronos_auth}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: ${DDL_AUTO:update}
@@ -20,9 +25,6 @@ spring:
     open-in-view: false
 
 jwt:
-  # Secret key (at least 256 bits for HMAC-SHA256)
   secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
-  # Default access token expiration: 15 minutes (in milliseconds)
   access-token-expiration-ms: ${JWT_ACCESS_EXPIRATION:900000}
-  # Default refresh token expiration: 7 days (in milliseconds)
   refresh-token-expiration-ms: ${JWT_REFRESH_EXPIRATION:604800000}
