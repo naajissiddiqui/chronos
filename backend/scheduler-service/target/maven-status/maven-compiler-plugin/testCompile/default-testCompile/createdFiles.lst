@@ -1,0 +1,4 @@
+com\chronos\scheduler\service\CronCalculationServiceTest.class
+com\chronos\scheduler\service\JobSchedulerServiceTest.class
+com\chronos\scheduler\SchedulerServiceApplicationTests.class
+com\chronos\scheduler\scheduler\JobPollingSchedulerTest.class
