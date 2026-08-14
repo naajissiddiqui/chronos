@@ -1,0 +1,23 @@
+spring:
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers:localhost:9092}
+    consumer:
+      group-id: chronos-worker
+      auto-offset-reset: earliest
+      auto-startup: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+worker:
+  id: worker-local-1
+
+kafka:
+  topics:
+    execution-dispatch: execution.dispatch
+    execution-completed: execution.completed
+    execution-failed: execution.failed

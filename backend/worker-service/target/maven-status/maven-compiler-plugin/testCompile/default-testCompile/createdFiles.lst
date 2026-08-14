@@ -1,0 +1,3 @@
+com\chronos\worker\kafka\KafkaExecutionDispatchConsumerTest.class
+com\chronos\worker\task\DemoReportTaskHandlerTest.class
+com\chronos\worker\WorkerServiceApplicationTests.class
