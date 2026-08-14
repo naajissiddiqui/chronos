@@ -24,7 +24,13 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 kafka:
   topics:
     job-triggered: job.triggered
+    execution-dispatch: execution.dispatch
+    execution-completed: execution.completed
+    execution-failed: execution.failed

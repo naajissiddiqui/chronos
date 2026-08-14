@@ -26,6 +26,9 @@ spring:
 
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
       group-id: ${KAFKA_CONSUMER_GROUP:chronos-execution-service}
       auto-offset-reset: earliest
@@ -43,3 +46,6 @@ management:
 kafka:
   topics:
     job-triggered: ${KAFKA_TOPIC_JOB_TRIGGERED:job.triggered}
+    execution-dispatch: ${KAFKA_TOPIC_EXECUTION_DISPATCH:execution.dispatch}
+    execution-completed: ${KAFKA_TOPIC_EXECUTION_COMPLETED:execution.completed}
+    execution-failed: ${KAFKA_TOPIC_EXECUTION_FAILED:execution.failed}

@@ -62,6 +62,12 @@ public class Execution {
     @Column(name = "error_message", length = 1000)
     private String errorMessage;
 
+    @Column(name = "worker_id", length = 100)
+    private String workerId;
+
+    @Column(name = "result", length = 1000)
+    private String result;
+
     public Execution() {
     }
 
@@ -168,5 +174,21 @@ public class Execution {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public String getWorkerId() {
+        return workerId;
+    }
+
+    public void setWorkerId(String workerId) {
+        this.workerId = workerId;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 }

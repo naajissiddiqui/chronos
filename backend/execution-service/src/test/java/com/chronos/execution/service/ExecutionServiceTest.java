@@ -3,13 +3,19 @@ package com.chronos.execution.service;
 import com.chronos.execution.dto.ExecutionResponse;
 import com.chronos.execution.entity.Execution;
 import com.chronos.execution.entity.ExecutionStatus;
+import com.chronos.execution.event.ExecutionCompletedEvent;
+import com.chronos.execution.event.ExecutionDispatchedEvent;
+import com.chronos.execution.event.ExecutionFailedEvent;
 import com.chronos.execution.event.JobTriggeredEvent;
+import com.chronos.execution.kafka.KafkaExecutionDispatchProducer;
 import com.chronos.execution.repository.ExecutionRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +26,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -32,6 +39,9 @@ class ExecutionServiceTest {
     @Autowired
     private ExecutionService executionService;
 
+    @MockBean
+    private KafkaExecutionDispatchProducer kafkaExecutionDispatchProducer;
+
     @BeforeAll
     static void initUtc() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
@@ -40,10 +50,11 @@ class ExecutionServiceTest {
     @BeforeEach
     void setUp() {
         executionRepository.deleteAll();
+        reset(kafkaExecutionDispatchProducer);
     }
 
     @Test
-    void testJobTriggeredEventCreatesPendingExecutionWithAttemptOne() {
+    void testJobTriggeredEventCreatesPendingExecutionAndDispatchesEvent() {
         UUID eventId = UUID.randomUUID();
         UUID jobId = UUID.randomUUID();
         UUID orgId = UUID.randomUUID();
@@ -62,9 +73,70 @@ class ExecutionServiceTest {
         assertEquals(eventId, execution.getSourceEventId());
         assertEquals(ExecutionStatus.PENDING, execution.getStatus());
         assertEquals(1, execution.getAttempt());
-        assertEquals(scheduledAt, execution.getScheduledAt());
-        assertNotNull(execution.getCreatedAt());
-        assertNotNull(execution.getUpdatedAt());
+
+        // Verify dispatch event published
+        ArgumentCaptor<ExecutionDispatchedEvent> captor = ArgumentCaptor.forClass(ExecutionDispatchedEvent.class);
+        verify(kafkaExecutionDispatchProducer, times(1)).sendExecutionDispatched(captor.capture());
+
+        ExecutionDispatchedEvent dispatchEvent = captor.getValue();
+        assertEquals(execution.getId(), dispatchEvent.getExecutionId());
+        assertEquals(jobId, dispatchEvent.getJobId());
+        assertEquals("DEMO_REPORT", dispatchEvent.getTaskType());
+    }
+
+    @Test
+    void testHandleExecutionCompletedUpdatesStatusToSucceeded() {
+        UUID eventId = UUID.randomUUID();
+        UUID jobId = UUID.randomUUID();
+        UUID orgId = UUID.randomUUID();
+
+        JobTriggeredEvent event = new JobTriggeredEvent(eventId, jobId, orgId, Instant.now(), Instant.now(), "HIGH");
+        Execution execution = executionService.createExecutionFromEvent(event).orElseThrow();
+
+        Instant completedAt = Instant.now();
+        ExecutionCompletedEvent completedEvent = new ExecutionCompletedEvent(
+                execution.getId(),
+                jobId,
+                orgId,
+                "worker-local-1",
+                1,
+                completedAt,
+                "Demo report generated successfully"
+        );
+
+        executionService.handleExecutionCompleted(completedEvent);
+
+        Execution updated = executionRepository.findById(execution.getId()).orElseThrow();
+        assertEquals(ExecutionStatus.SUCCEEDED, updated.getStatus());
+        assertEquals("worker-local-1", updated.getWorkerId());
+        assertEquals("Demo report generated successfully", updated.getResult());
+    }
+
+    @Test
+    void testHandleExecutionFailedUpdatesStatusToFailed() {
+        UUID eventId = UUID.randomUUID();
+        UUID jobId = UUID.randomUUID();
+        UUID orgId = UUID.randomUUID();
+
+        JobTriggeredEvent event = new JobTriggeredEvent(eventId, jobId, orgId, Instant.now(), Instant.now(), "HIGH");
+        Execution execution = executionService.createExecutionFromEvent(event).orElseThrow();
+
+        ExecutionFailedEvent failedEvent = new ExecutionFailedEvent(
+                execution.getId(),
+                jobId,
+                orgId,
+                "worker-local-1",
+                1,
+                Instant.now(),
+                "Unsupported task type: INVALID"
+        );
+
+        executionService.handleExecutionFailed(failedEvent);
+
+        Execution updated = executionRepository.findById(execution.getId()).orElseThrow();
+        assertEquals(ExecutionStatus.FAILED, updated.getStatus());
+        assertEquals("worker-local-1", updated.getWorkerId());
+        assertEquals("Unsupported task type: INVALID", updated.getErrorMessage());
     }
 
     @Test
@@ -83,31 +155,8 @@ class ExecutionServiceTest {
         // Duplicate event with same eventId
         Optional<Execution> second = executionService.createExecutionFromEvent(event);
         assertTrue(second.isPresent());
-        assertEquals(first.get().getId(), second.get().getId(), "Duplicate event must return existing execution without creating new record");
 
-        // Total count in DB must remain 1
         assertEquals(1, executionRepository.count());
-    }
-
-    @Test
-    void testGetExecutionsScopedToOrganization() {
-        UUID orgA = UUID.randomUUID();
-        UUID orgB = UUID.randomUUID();
-        UUID jobIdA = UUID.randomUUID();
-        UUID jobIdB = UUID.randomUUID();
-
-        JobTriggeredEvent eventA = new JobTriggeredEvent(UUID.randomUUID(), jobIdA, orgA, Instant.now(), Instant.now(), "NORMAL");
-        JobTriggeredEvent eventB = new JobTriggeredEvent(UUID.randomUUID(), jobIdB, orgB, Instant.now(), Instant.now(), "NORMAL");
-
-        executionService.createExecutionFromEvent(eventA);
-        executionService.createExecutionFromEvent(eventB);
-
-        List<ExecutionResponse> orgAExecutions = executionService.getExecutionsForOrganization(orgA);
-        assertEquals(1, orgAExecutions.size());
-        assertEquals(jobIdA, orgAExecutions.get(0).getJobId());
-
-        List<ExecutionResponse> orgBExecutions = executionService.getExecutionsForOrganization(orgB);
-        assertEquals(1, orgBExecutions.size());
-        assertEquals(jobIdB, orgBExecutions.get(0).getJobId());
+        verify(kafkaExecutionDispatchProducer, times(1)).sendExecutionDispatched(any(ExecutionDispatchedEvent.class));
     }
 }

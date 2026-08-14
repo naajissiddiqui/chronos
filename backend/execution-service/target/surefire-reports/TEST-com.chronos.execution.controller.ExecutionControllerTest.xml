@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.chronos.execution.controller.ExecutionControllerTest" time="11.71" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.chronos.execution.controller.ExecutionControllerTest" time="12.539" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-21.0.11\bin"/>
-    <property name="sun.java.command" value="C:\Users\naaji\AppData\Local\Temp\surefire12677947381836108933\surefirebooter-20260814220938029_3.jar C:\Users\naaji\AppData\Local\Temp\surefire12677947381836108933 2026-08-14T22-09-37_823-jvmRun1 surefire-20260814220938029_1tmp surefire_0-20260814220938029_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\naaji\AppData\Local\Temp\surefire10922643357770730459\surefirebooter-20260814221739369_3.jar C:\Users\naaji\AppData\Local\Temp\surefire10922643357770730459 2026-08-14T22-17-39_179-jvmRun1 surefire-20260814221739369_1tmp surefire_0-20260814221739369_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\chronos\backend\execution-service\target\test-classes;C:\chronos\backend\execution-service\target\classes;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-starter-web\3.3.2\spring-boot-starter-web-3.3.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-starter\3.3.2\spring-boot-starter-3.3.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot\3.3.2\spring-boot-3.3.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\3.3.2\spring-boot-autoconfigure-3.3.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-starter-logging\3.3.2\spring-boot-starter-logging-3.3.2.jar;C:\Users\naaji\.m2\repository\org\apache\logging\log4j\log4j-to-slf4j\2.23.1\log4j-to-slf4j-2.23.1.jar;C:\Users\naaji\.m2\repository\org\apache\logging\log4j\log4j-api\2.23.1\log4j-api-2.23.1.jar;C:\Users\naaji\.m2\repository\org\slf4j\jul-to-slf4j\2.0.13\jul-to-slf4j-2.0.13.jar;C:\Users\naaji\.m2\repository\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\naaji\.m2\repository\org\yaml\snakeyaml\2.2\snakeyaml-2.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-starter-json\3.3.2\spring-boot-starter-json-3.3.2.jar;C:\Users\naaji\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.17.2\jackson-databind-2.17.2.jar;C:\Users\naaji\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.17.2\jackson-annotations-2.17.2.jar;C:\Users\naaji\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.17.2\jackson-core-2.17.2.jar;C:\Users\naaji\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.17.2\jackson-datatype-jdk8-2.17.2.jar;C:\Users\naaji\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.17.2\jackson-datatype-jsr310-2.17.2.jar;C:\Users\naaji\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.17.2\jackson-module-parameter-names-2.17.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\3.3.2\spring-boot-starter-tomcat-3.3.2.jar;C:\Users\naaji\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\10.1.26\tomcat-embed-core-10.1.26.jar;C:\Users\naaji\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.26\tomcat-embed-websocket-10.1.26.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-web\6.1.11\spring-web-6.1.11.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-beans\6.1.11\spring-beans-6.1.11.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-webmvc\6.1.11\spring-webmvc-6.1.11.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-aop\6.1.11\spring-aop-6.1.11.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-expression\6.1.11\spring-expression-6.1.11.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-starter-data-jpa\3.3.2\spring-boot-starter-data-jpa-3.3.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-starter-aop\3.3.2\spring-boot-starter-aop-3.3.2.jar;C:\Users\naaji\.m2\repository\org\aspectj\aspectjweaver\1.9.22.1\aspectjweaver-1.9.22.1.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-starter-jdbc\3.3.2\spring-boot-starter-jdbc-3.3.2.jar;C:\Users\naaji\.m2\repository\com\zaxxer\HikariCP\5.1.0\HikariCP-5.1.0.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-jdbc\6.1.11\spring-jdbc-6.1.11.jar;C:\Users\naaji\.m2\repository\org\hibernate\orm\hibernate-core\6.5.2.Final\hibernate-core-6.5.2.Final.jar;C:\Users\naaji\.m2\repository\jakarta\persistence\jakarta.persistence-api\3.1.0\jakarta.persistence-api-3.1.0.jar;C:\Users\naaji\.m2\repository\jakarta\transaction\jakarta.transaction-api\2.0.1\jakarta.transaction-api-2.0.1.jar;C:\Users\naaji\.m2\repository\org\jboss\logging\jboss-logging\3.5.3.Final\jboss-logging-3.5.3.Final.jar;C:\Users\naaji\.m2\repository\org\hibernate\common\hibernate-commons-annotations\6.0.6.Final\hibernate-commons-annotations-6.0.6.Final.jar;C:\Users\naaji\.m2\repository\io\smallrye\jandex\3.1.2\jandex-3.1.2.jar;C:\Users\naaji\.m2\repository\com\fasterxml\classmate\1.7.0\classmate-1.7.0.jar;C:\Users\naaji\.m2\repository\net\bytebuddy\byte-buddy\1.14.18\byte-buddy-1.14.18.jar;C:\Users\naaji\.m2\repository\org\glassfish\jaxb\jaxb-runtime\4.0.5\jaxb-runtime-4.0.5.jar;C:\Users\naaji\.m2\repository\org\glassfish\jaxb\jaxb-core\4.0.5\jaxb-core-4.0.5.jar;C:\Users\naaji\.m2\repository\org\eclipse\angus\angus-activation\2.0.2\angus-activation-2.0.2.jar;C:\Users\naaji\.m2\repository\org\glassfish\jaxb\txw2\4.0.5\txw2-4.0.5.jar;C:\Users\naaji\.m2\repository\com\sun\istack\istack-commons-runtime\4.1.2\istack-commons-runtime-4.1.2.jar;C:\Users\naaji\.m2\repository\jakarta\inject\jakarta.inject-api\2.0.1\jakarta.inject-api-2.0.1.jar;C:\Users\naaji\.m2\repository\org\antlr\antlr4-runtime\4.13.0\antlr4-runtime-4.13.0.jar;C:\Users\naaji\.m2\repository\org\springframework\data\spring-data-jpa\3.3.2\spring-data-jpa-3.3.2.jar;C:\Users\naaji\.m2\repository\org\springframework\data\spring-data-commons\3.3.2\spring-data-commons-3.3.2.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-orm\6.1.11\spring-orm-6.1.11.jar;C:\Users\naaji\.m2\repository\org\slf4j\slf4j-api\2.0.13\slf4j-api-2.0.13.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-aspects\6.1.11\spring-aspects-6.1.11.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-starter-validation\3.3.2\spring-boot-starter-validation-3.3.2.jar;C:\Users\naaji\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\10.1.26\tomcat-embed-el-10.1.26.jar;C:\Users\naaji\.m2\repository\org\hibernate\validator\hibernate-validator\8.0.1.Final\hibernate-validator-8.0.1.Final.jar;C:\Users\naaji\.m2\repository\jakarta\validation\jakarta.validation-api\3.0.2\jakarta.validation-api-3.0.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-starter-actuator\3.3.2\spring-boot-starter-actuator-3.3.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-actuator-autoconfigure\3.3.2\spring-boot-actuator-autoconfigure-3.3.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-actuator\3.3.2\spring-boot-actuator-3.3.2.jar;C:\Users\naaji\.m2\repository\io\micrometer\micrometer-observation\1.13.2\micrometer-observation-1.13.2.jar;C:\Users\naaji\.m2\repository\io\micrometer\micrometer-commons\1.13.2\micrometer-commons-1.13.2.jar;C:\Users\naaji\.m2\repository\io\micrometer\micrometer-jakarta9\1.13.2\micrometer-jakarta9-1.13.2.jar;C:\Users\naaji\.m2\repository\io\micrometer\micrometer-core\1.13.2\micrometer-core-1.13.2.jar;C:\Users\naaji\.m2\repository\org\hdrhistogram\HdrHistogram\2.2.2\HdrHistogram-2.2.2.jar;C:\Users\naaji\.m2\repository\org\latencyutils\LatencyUtils\2.0.3\LatencyUtils-2.0.3.jar;C:\Users\naaji\.m2\repository\org\springframework\kafka\spring-kafka\3.2.2\spring-kafka-3.2.2.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-context\6.1.11\spring-context-6.1.11.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-messaging\6.1.11\spring-messaging-6.1.11.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-tx\6.1.11\spring-tx-6.1.11.jar;C:\Users\naaji\.m2\repository\org\springframework\retry\spring-retry\2.0.7\spring-retry-2.0.7.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-clients\3.7.1\kafka-clients-3.7.1.jar;C:\Users\naaji\.m2\repository\com\github\luben\zstd-jni\1.5.6-3\zstd-jni-1.5.6-3.jar;C:\Users\naaji\.m2\repository\org\lz4\lz4-java\1.8.0\lz4-java-1.8.0.jar;C:\Users\naaji\.m2\repository\org\xerial\snappy\snappy-java\1.1.10.5\snappy-java-1.1.10.5.jar;C:\Users\naaji\.m2\repository\org\postgresql\postgresql\42.7.3\postgresql-42.7.3.jar;C:\Users\naaji\.m2\repository\org\checkerframework\checker-qual\3.42.0\checker-qual-3.42.0.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-starter-test\3.3.2\spring-boot-starter-test-3.3.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-test\3.3.2\spring-boot-test-3.3.2.jar;C:\Users\naaji\.m2\repository\org\springframework\boot\spring-boot-test-autoconfigure\3.3.2\spring-boot-test-autoconfigure-3.3.2.jar;C:\Users\naaji\.m2\repository\com\jayway\jsonpath\json-path\2.9.0\json-path-2.9.0.jar;C:\Users\naaji\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.2\jakarta.xml.bind-api-4.0.2.jar;C:\Users\naaji\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.3\jakarta.activation-api-2.1.3.jar;C:\Users\naaji\.m2\repository\net\minidev\json-smart\2.5.1\json-smart-2.5.1.jar;C:\Users\naaji\.m2\repository\net\minidev\accessors-smart\2.5.1\accessors-smart-2.5.1.jar;C:\Users\naaji\.m2\repository\org\ow2\asm\asm\9.6\asm-9.6.jar;C:\Users\naaji\.m2\repository\org\assertj\assertj-core\3.25.3\assertj-core-3.25.3.jar;C:\Users\naaji\.m2\repository\org\awaitility\awaitility\4.2.1\awaitility-4.2.1.jar;C:\Users\naaji\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\naaji\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.3\junit-jupiter-5.10.3.jar;C:\Users\naaji\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.3\junit-jupiter-params-5.10.3.jar;C:\Users\naaji\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.3\junit-jupiter-engine-5.10.3.jar;C:\Users\naaji\.m2\repository\org\mockito\mockito-core\5.11.0\mockito-core-5.11.0.jar;C:\Users\naaji\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.18\byte-buddy-agent-1.14.18.jar;C:\Users\naaji\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\naaji\.m2\repository\org\mockito\mockito-junit-jupiter\5.11.0\mockito-junit-jupiter-5.11.0.jar;C:\Users\naaji\.m2\repository\org\skyscreamer\jsonassert\1.5.3\jsonassert-1.5.3.jar;C:\Users\naaji\.m2\repository\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-core\6.1.11\spring-core-6.1.11.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-jcl\6.1.11\spring-jcl-6.1.11.jar;C:\Users\naaji\.m2\repository\org\springframework\spring-test\6.1.11\spring-test-6.1.11.jar;C:\Users\naaji\.m2\repository\org\xmlunit\xmlunit-core\2.9.1\xmlunit-core-2.9.1.jar;C:\Users\naaji\.m2\repository\org\springframework\kafka\spring-kafka-test\3.2.2\spring-kafka-test-3.2.2.jar;C:\Users\naaji\.m2\repository\org\apache\zookeeper\zookeeper\3.8.4\zookeeper-3.8.4.jar;C:\Users\naaji\.m2\repository\org\apache\zookeeper\zookeeper-jute\3.8.4\zookeeper-jute-3.8.4.jar;C:\Users\naaji\.m2\repository\org\apache\yetus\audience-annotations\0.12.0\audience-annotations-0.12.0.jar;C:\Users\naaji\.m2\repository\io\netty\netty-handler\4.1.111.Final\netty-handler-4.1.111.Final.jar;C:\Users\naaji\.m2\repository\io\netty\netty-common\4.1.111.Final\netty-common-4.1.111.Final.jar;C:\Users\naaji\.m2\repository\io\netty\netty-resolver\4.1.111.Final\netty-resolver-4.1.111.Final.jar;C:\Users\naaji\.m2\repository\io\netty\netty-buffer\4.1.111.Final\netty-buffer-4.1.111.Final.jar;C:\Users\naaji\.m2\repository\io\netty\netty-transport\4.1.111.Final\netty-transport-4.1.111.Final.jar;C:\Users\naaji\.m2\repository\io\netty\netty-transport-native-unix-common\4.1.111.Final\netty-transport-native-unix-common-4.1.111.Final.jar;C:\Users\naaji\.m2\repository\io\netty\netty-codec\4.1.111.Final\netty-codec-4.1.111.Final.jar;C:\Users\naaji\.m2\repository\io\netty\netty-transport-native-epoll\4.1.111.Final\netty-transport-native-epoll-4.1.111.Final.jar;C:\Users\naaji\.m2\repository\io\netty\netty-transport-classes-epoll\4.1.111.Final\netty-transport-classes-epoll-4.1.111.Final.jar;C:\Users\naaji\.m2\repository\ch\qos\logback\logback-core\1.5.6\logback-core-1.5.6.jar;C:\Users\naaji\.m2\repository\ch\qos\logback\logback-classic\1.5.6\logback-classic-1.5.6.jar;C:\Users\naaji\.m2\repository\commons-io\commons-io\2.11.0\commons-io-2.11.0.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-clients\3.7.1\kafka-clients-3.7.1-test.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-metadata\3.7.1\kafka-metadata-3.7.1.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-raft\3.7.1\kafka-raft-3.7.1.jar;C:\Users\naaji\.m2\repository\com\yammer\metrics\metrics-core\2.2.0\metrics-core-2.2.0.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-server-common\3.7.1\kafka-server-common-3.7.1.jar;C:\Users\naaji\.m2\repository\net\sf\jopt-simple\jopt-simple\5.0.4\jopt-simple-5.0.4.jar;C:\Users\naaji\.m2\repository\org\pcollections\pcollections\4.0.1\pcollections-4.0.1.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-server-common\3.7.1\kafka-server-common-3.7.1-test.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-streams-test-utils\3.7.1\kafka-streams-test-utils-3.7.1.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-streams\3.7.1\kafka-streams-3.7.1.jar;C:\Users\naaji\.m2\repository\org\rocksdb\rocksdbjni\7.9.2\rocksdbjni-7.9.2.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka_2.13\3.7.1\kafka_2.13-3.7.1.jar;C:\Users\naaji\.m2\repository\org\scala-lang\scala-library\2.13.12\scala-library-2.13.12.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-group-coordinator\3.7.1\kafka-group-coordinator-3.7.1.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-storage-api\3.7.1\kafka-storage-api-3.7.1.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-tools-api\3.7.1\kafka-tools-api-3.7.1.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-storage\3.7.1\kafka-storage-3.7.1.jar;C:\Users\naaji\.m2\repository\com\github\ben-manes\caffeine\caffeine\3.1.8\caffeine-3.1.8.jar;C:\Users\naaji\.m2\repository\com\google\errorprone\error_prone_annotations\2.21.1\error_prone_annotations-2.21.1.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka-server\3.7.1\kafka-server-3.7.1.jar;C:\Users\naaji\.m2\repository\net\sourceforge\argparse4j\argparse4j\0.7.0\argparse4j-0.7.0.jar;C:\Users\naaji\.m2\repository\commons-validator\commons-validator\1.7\commons-validator-1.7.jar;C:\Users\naaji\.m2\repository\commons-beanutils\commons-beanutils\1.9.4\commons-beanutils-1.9.4.jar;C:\Users\naaji\.m2\repository\commons-digester\commons-digester\2.1\commons-digester-2.1.jar;C:\Users\naaji\.m2\repository\commons-collections\commons-collections\3.2.2\commons-collections-3.2.2.jar;C:\Users\naaji\.m2\repository\com\fasterxml\jackson\module\jackson-module-scala_2.13\2.17.2\jackson-module-scala_2.13-2.17.2.jar;C:\Users\naaji\.m2\repository\com\thoughtworks\paranamer\paranamer\2.8\paranamer-2.8.jar;C:\Users\naaji\.m2\repository\com\fasterxml\jackson\dataformat\jackson-dataformat-csv\2.17.2\jackson-dataformat-csv-2.17.2.jar;C:\Users\naaji\.m2\repository\org\bitbucket\b_c\jose4j\0.9.4\jose4j-0.9.4.jar;C:\Users\naaji\.m2\repository\org\scala-lang\modules\scala-collection-compat_2.13\2.10.0\scala-collection-compat_2.13-2.10.0.jar;C:\Users\naaji\.m2\repository\org\scala-lang\modules\scala-java8-compat_2.13\1.0.2\scala-java8-compat_2.13-1.0.2.jar;C:\Users\naaji\.m2\repository\org\scala-lang\scala-reflect\2.13.12\scala-reflect-2.13.12.jar;C:\Users\naaji\.m2\repository\com\typesafe\scala-logging\scala-logging_2.13\3.9.4\scala-logging_2.13-3.9.4.jar;C:\Users\naaji\.m2\repository\io\dropwizard\metrics\metrics-core\4.1.12.1\metrics-core-4.1.12.1.jar;C:\Users\naaji\.m2\repository\commons-cli\commons-cli\1.4\commons-cli-1.4.jar;C:\Users\naaji\.m2\repository\org\apache\kafka\kafka_2.13\3.7.1\kafka_2.13-3.7.1-test.jar;C:\Users\naaji\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.3\junit-jupiter-api-5.10.3.jar;C:\Users\naaji\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\naaji\.m2\repository\org\junit\platform\junit-platform-commons\1.10.3\junit-platform-commons-1.10.3.jar;C:\Users\naaji\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\naaji\.m2\repository\org\junit\platform\junit-platform-launcher\1.10.3\junit-platform-launcher-1.10.3.jar;C:\Users\naaji\.m2\repository\org\junit\platform\junit-platform-engine\1.10.3\junit-platform-engine-1.10.3.jar;C:\Users\naaji\.m2\repository\com\h2database\h2\2.2.224\h2-2.2.224.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -33,7 +33,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="FILE_LOG_CHARSET" value="UTF-8"/>
     <property name="java.awt.headless" value="true"/>
-    <property name="surefire.real.class.path" value="C:\Users\naaji\AppData\Local\Temp\surefire12677947381836108933\surefirebooter-20260814220938029_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\naaji\AppData\Local\Temp\surefire10922643357770730459\surefirebooter-20260814221739369_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.11+9-LTS-211"/>
@@ -52,7 +52,7 @@
     <property name="user.dir" value="C:\chronos\backend\execution-service"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="PID" value="20496"/>
+    <property name="PID" value="15828"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
     <property name="native.encoding" value="Cp1252"/>
@@ -65,9 +65,9 @@
     <property name="java.class.version" value="65.0"/>
     <property name="LOGGED_APPLICATION_NAME" value="[execution-service] "/>
   </properties>
-  <testcase name="testMissingOrganizationHeaderReturnsUnauthorized" classname="com.chronos.execution.controller.ExecutionControllerTest" time="1.174">
-    <system-out><![CDATA[22:09:39.311 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.chronos.execution.controller.ExecutionControllerTest]: ExecutionControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-22:09:39.479 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.chronos.execution.ExecutionServiceApplication for test class com.chronos.execution.controller.ExecutionControllerTest
+  <testcase name="testMissingOrganizationHeaderReturnsUnauthorized" classname="com.chronos.execution.controller.ExecutionControllerTest" time="1.53">
+    <system-out><![CDATA[22:17:40.693 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.chronos.execution.controller.ExecutionControllerTest]: ExecutionControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+22:17:40.922 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.chronos.execution.ExecutionServiceApplication for test class com.chronos.execution.controller.ExecutionControllerTest
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -78,25 +78,25 @@
 
  :: Spring Boot ::                (v3.3.2)
 
-2026-08-14T22:09:40.472+05:30  INFO 20496 --- [execution-service] [           main] c.c.e.c.ExecutionControllerTest          : Starting ExecutionControllerTest using Java 21.0.11 with PID 20496 (started by naajis in C:\chronos\backend\execution-service)
-2026-08-14T22:09:40.475+05:30  INFO 20496 --- [execution-service] [           main] c.c.e.c.ExecutionControllerTest          : The following 1 profile is active: "test"
-2026-08-14T22:09:42.511+05:30  INFO 20496 --- [execution-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-08-14T22:09:42.592+05:30  INFO 20496 --- [execution-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 66 ms. Found 1 JPA repository interface.
-2026-08-14T22:09:44.139+05:30  INFO 20496 --- [execution-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-08-14T22:09:44.274+05:30  INFO 20496 --- [execution-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
-2026-08-14T22:09:44.331+05:30  INFO 20496 --- [execution-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-08-14T22:09:44.894+05:30  INFO 20496 --- [execution-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-08-14T22:09:44.946+05:30  INFO 20496 --- [execution-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-08-14T22:09:45.234+05:30  INFO 20496 --- [execution-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:executiondb user=SA
-2026-08-14T22:09:45.234+05:30  INFO 20496 --- [execution-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-08-14T22:09:45.274+05:30  WARN 20496 --- [execution-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-08-14T22:09:46.708+05:30  INFO 20496 --- [execution-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-08-14T22:09:46.749+05:30  INFO 20496 --- [execution-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-08-14T22:09:48.676+05:30  INFO 20496 --- [execution-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2026-08-14T22:09:48.676+05:30  INFO 20496 --- [execution-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2026-08-14T22:09:48.692+05:30  INFO 20496 --- [execution-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoints beneath base path '/actuator'
-2026-08-14T22:09:48.719+05:30  INFO 20496 --- [execution-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 42 ms
-2026-08-14T22:09:48.895+05:30  INFO 20496 --- [execution-service] [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+2026-08-14T22:17:41.597+05:30  INFO 15828 --- [execution-service] [           main] c.c.e.c.ExecutionControllerTest          : Starting ExecutionControllerTest using Java 21.0.11 with PID 15828 (started by naajis in C:\chronos\backend\execution-service)
+2026-08-14T22:17:41.599+05:30  INFO 15828 --- [execution-service] [           main] c.c.e.c.ExecutionControllerTest          : The following 1 profile is active: "test"
+2026-08-14T22:17:43.575+05:30  INFO 15828 --- [execution-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-14T22:17:43.716+05:30  INFO 15828 --- [execution-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 63 ms. Found 1 JPA repository interface.
+2026-08-14T22:17:44.961+05:30  INFO 15828 --- [execution-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-14T22:17:45.100+05:30  INFO 15828 --- [execution-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-08-14T22:17:45.154+05:30  INFO 15828 --- [execution-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-14T22:17:45.635+05:30  INFO 15828 --- [execution-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-14T22:17:45.668+05:30  INFO 15828 --- [execution-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-14T22:17:45.923+05:30  INFO 15828 --- [execution-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:executiondb user=SA
+2026-08-14T22:17:45.923+05:30  INFO 15828 --- [execution-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-14T22:17:45.963+05:30  WARN 15828 --- [execution-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-14T22:17:47.485+05:30  INFO 15828 --- [execution-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-14T22:17:47.535+05:30  INFO 15828 --- [execution-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-14T22:17:49.735+05:30  INFO 15828 --- [execution-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-08-14T22:17:49.735+05:30  INFO 15828 --- [execution-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-08-14T22:17:49.752+05:30  INFO 15828 --- [execution-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoints beneath base path '/actuator'
+2026-08-14T22:17:49.784+05:30  INFO 15828 --- [execution-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 33 ms
+2026-08-14T22:17:49.993+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
 	allow.auto.create.topics = true
 	auto.commit.interval.ms = 5000
 	auto.include.jmx.reporter = true
@@ -194,38 +194,276 @@
 	ssl.truststore.type = JKS
 	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
 
-2026-08-14T22:09:48.991+05:30  INFO 20496 --- [execution-service] [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
-2026-08-14T22:09:49.341+05:30  INFO 20496 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.7.1
-2026-08-14T22:09:49.341+05:30  INFO 20496 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: e2494e6ffb89f828
-2026-08-14T22:09:49.341+05:30  INFO 20496 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1786725589341
-2026-08-14T22:09:49.361+05:30  INFO 20496 --- [execution-service] [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Subscribed to topic(s): job.triggered
-2026-08-14T22:09:49.391+05:30  INFO 20496 --- [execution-service] [           main] c.c.e.c.ExecutionControllerTest          : Started ExecutionControllerTest in 9.513 seconds (process running for 11.159)
-2026-08-14T22:09:50.228+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Cluster ID: Some(5L6g3nShT-eMCtK--X86sw)
-2026-08-14T22:09:50.229+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Discovered group coordinator localhost:9092 (id: 2147483646 rack: null)
-2026-08-14T22:09:50.234+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] (Re-)joining group
-2026-08-14T22:09:50.273+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Request joining group due to: need to re-join with the given member-id: consumer-chronos-execution-service-1-49b587d6-c7c4-4aa1-b27e-12d394a0af2e
-2026-08-14T22:09:50.275+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] (Re-)joining group
-2026-08-14T22:09:50.282+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Successfully joined group with generation Generation{generationId=4, memberId='consumer-chronos-execution-service-1-49b587d6-c7c4-4aa1-b27e-12d394a0af2e', protocol='range'}
-2026-08-14T22:09:50.292+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Finished assignment for group at generation 4: {consumer-chronos-execution-service-1-49b587d6-c7c4-4aa1-b27e-12d394a0af2e=Assignment(partitions=[job.triggered-0])}
-2026-08-14T22:09:50.305+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Successfully synced group in generation Generation{generationId=4, memberId='consumer-chronos-execution-service-1-49b587d6-c7c4-4aa1-b27e-12d394a0af2e', protocol='range'}
-2026-08-14T22:09:50.306+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Notifying assignor about the new Assignment(partitions=[job.triggered-0])
-2026-08-14T22:09:50.309+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Adding newly assigned partitions: job.triggered-0
-2026-08-14T22:09:50.321+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Found no committed offset for partition job.triggered-0
-2026-08-14T22:09:50.339+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Resetting offset for partition job.triggered-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:9092 (id: 1 rack: null)], epoch=0}}.
-2026-08-14T22:09:50.341+05:30  INFO 20496 --- [execution-service] [ntainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : chronos-execution-service: partitions assigned: [job.triggered-0]
-2026-08-14T22:09:50.511+05:30  WARN 20496 --- [execution-service] [           main] c.c.e.exception.GlobalExceptionHandler   : Unauthorized access attempt: Missing required X-Organization-Id header
+2026-08-14T22:17:50.094+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-08-14T22:17:50.469+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.7.1
+2026-08-14T22:17:50.469+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: e2494e6ffb89f828
+2026-08-14T22:17:50.469+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1786726070469
+2026-08-14T22:17:50.507+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Subscribed to topic(s): job.triggered
+2026-08-14T22:17:50.531+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [localhost:9092]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-chronos-execution-service-2
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = chronos-execution-service
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-08-14T22:17:50.531+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-08-14T22:17:50.536+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.7.1
+2026-08-14T22:17:50.536+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: e2494e6ffb89f828
+2026-08-14T22:17:50.536+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1786726070536
+2026-08-14T22:17:50.536+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] Subscribed to topic(s): execution.failed
+2026-08-14T22:17:50.557+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = earliest
+	bootstrap.servers = [localhost:9092]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-chronos-execution-service-3
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = chronos-execution-service
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.springframework.kafka.support.serializer.JsonDeserializer
+
+2026-08-14T22:17:50.558+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-08-14T22:17:50.569+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.7.1
+2026-08-14T22:17:50.569+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: e2494e6ffb89f828
+2026-08-14T22:17:50.569+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1786726070569
+2026-08-14T22:17:50.569+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.c.c.internals.LegacyKafkaConsumer  : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Subscribed to topic(s): execution.completed
+2026-08-14T22:17:50.599+05:30  INFO 15828 --- [execution-service] [           main] c.c.e.c.ExecutionControllerTest          : Started ExecutionControllerTest in 9.375 seconds (process running for 11.056)
+2026-08-14T22:17:51.539+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Cluster ID: Some(5L6g3nShT-eMCtK--X86sw)
+2026-08-14T22:17:51.547+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Discovered group coordinator localhost:9092 (id: 2147483646 rack: null)
+2026-08-14T22:17:51.554+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] (Re-)joining group
+2026-08-14T22:17:51.562+05:30  WARN 15828 --- [execution-service] [ntainer#1-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Error while fetching metadata with correlation id 2 : {execution.completed=UNKNOWN_TOPIC_OR_PARTITION}
+2026-08-14T22:17:51.562+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Cluster ID: Some(5L6g3nShT-eMCtK--X86sw)
+2026-08-14T22:17:51.563+05:30  WARN 15828 --- [execution-service] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] Error while fetching metadata with correlation id 2 : {execution.failed=UNKNOWN_TOPIC_OR_PARTITION}
+2026-08-14T22:17:51.563+05:30  INFO 15828 --- [execution-service] [ntainer#0-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] Cluster ID: Some(5L6g3nShT-eMCtK--X86sw)
+2026-08-14T22:17:51.565+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Discovered group coordinator localhost:9092 (id: 2147483646 rack: null)
+2026-08-14T22:17:51.566+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] (Re-)joining group
+2026-08-14T22:17:51.567+05:30  INFO 15828 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] Discovered group coordinator localhost:9092 (id: 2147483646 rack: null)
+2026-08-14T22:17:51.569+05:30  INFO 15828 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] (Re-)joining group
+2026-08-14T22:17:51.648+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Request joining group due to: need to re-join with the given member-id: consumer-chronos-execution-service-1-3c12b647-032b-4033-9fec-92cf1b460168
+2026-08-14T22:17:51.648+05:30  INFO 15828 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] Request joining group due to: need to re-join with the given member-id: consumer-chronos-execution-service-2-60d1b64b-02e9-4a45-b7af-5cd223db75fd
+2026-08-14T22:17:51.648+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Request joining group due to: need to re-join with the given member-id: consumer-chronos-execution-service-3-8161566d-6563-4b65-bd35-3179362b63c9
+2026-08-14T22:17:51.650+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] (Re-)joining group
+2026-08-14T22:17:51.650+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] (Re-)joining group
+2026-08-14T22:17:51.650+05:30  INFO 15828 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] (Re-)joining group
+2026-08-14T22:17:51.674+05:30  WARN 15828 --- [execution-service] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] Error while fetching metadata with correlation id 8 : {execution.failed=UNKNOWN_TOPIC_OR_PARTITION}
+2026-08-14T22:17:51.693+05:30  WARN 15828 --- [execution-service] [ntainer#1-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Error while fetching metadata with correlation id 8 : {execution.completed=UNKNOWN_TOPIC_OR_PARTITION}
+2026-08-14T22:17:51.714+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Successfully joined group with generation Generation{generationId=1, memberId='consumer-chronos-execution-service-1-3c12b647-032b-4033-9fec-92cf1b460168', protocol='range'}
+2026-08-14T22:17:51.714+05:30  INFO 15828 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] Successfully joined group with generation Generation{generationId=1, memberId='consumer-chronos-execution-service-2-60d1b64b-02e9-4a45-b7af-5cd223db75fd', protocol='range'}
+2026-08-14T22:17:51.723+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Successfully joined group with generation Generation{generationId=1, memberId='consumer-chronos-execution-service-3-8161566d-6563-4b65-bd35-3179362b63c9', protocol='range'}
+2026-08-14T22:17:51.745+05:30  WARN 15828 --- [execution-service] [ntainer#1-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Error while fetching metadata with correlation id 9 : {execution.failed=UNKNOWN_TOPIC_OR_PARTITION, execution.completed=UNKNOWN_TOPIC_OR_PARTITION}
+2026-08-14T22:17:51.757+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Finished assignment for group at generation 1: {consumer-chronos-execution-service-1-3c12b647-032b-4033-9fec-92cf1b460168=Assignment(partitions=[job.triggered-0]), consumer-chronos-execution-service-2-60d1b64b-02e9-4a45-b7af-5cd223db75fd=Assignment(partitions=[]), consumer-chronos-execution-service-3-8161566d-6563-4b65-bd35-3179362b63c9=Assignment(partitions=[])}
+2026-08-14T22:17:51.874+05:30  WARN 15828 --- [execution-service] [ntainer#1-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Error while fetching metadata with correlation id 11 : {execution.failed=UNKNOWN_TOPIC_OR_PARTITION}
+2026-08-14T22:17:51.908+05:30  WARN 15828 --- [execution-service] [ntainer#0-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] Error while fetching metadata with correlation id 10 : {execution.failed=UNKNOWN_TOPIC_OR_PARTITION}
+2026-08-14T22:17:52.003+05:30  WARN 15828 --- [execution-service] [ntainer#1-0-C-1] org.apache.kafka.clients.NetworkClient   : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Error while fetching metadata with correlation id 12 : {execution.failed=UNKNOWN_TOPIC_OR_PARTITION}
+2026-08-14T22:17:52.011+05:30  WARN 15828 --- [execution-service] [           main] c.c.e.exception.GlobalExceptionHandler   : Unauthorized access attempt: Missing required X-Organization-Id header
+2026-08-14T22:17:52.041+05:30  INFO 15828 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] Successfully synced group in generation Generation{generationId=1, memberId='consumer-chronos-execution-service-2-60d1b64b-02e9-4a45-b7af-5cd223db75fd', protocol='range'}
+2026-08-14T22:17:52.041+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Successfully synced group in generation Generation{generationId=1, memberId='consumer-chronos-execution-service-1-3c12b647-032b-4033-9fec-92cf1b460168', protocol='range'}
+2026-08-14T22:17:52.041+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Successfully synced group in generation Generation{generationId=1, memberId='consumer-chronos-execution-service-3-8161566d-6563-4b65-bd35-3179362b63c9', protocol='range'}
+2026-08-14T22:17:52.042+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Request joining group due to: cached metadata has changed from (version4: {execution.failed=[], job.triggered=[NO_RACKS], execution.completed=[]}) at the beginning of the rebalance to (version6: {execution.failed=[], job.triggered=[NO_RACKS], execution.completed=[NO_RACKS]})
+2026-08-14T22:17:52.042+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Notifying assignor about the new Assignment(partitions=[job.triggered-0])
+2026-08-14T22:17:52.042+05:30  INFO 15828 --- [execution-service] [ntainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] Notifying assignor about the new Assignment(partitions=[])
+2026-08-14T22:17:52.042+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Notifying assignor about the new Assignment(partitions=[])
+2026-08-14T22:17:52.042+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Adding newly assigned partitions: 
+2026-08-14T22:17:52.042+05:30  INFO 15828 --- [execution-service] [ntainer#0-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-chronos-execution-service-2, groupId=chronos-execution-service] Adding newly assigned partitions: 
+2026-08-14T22:17:52.044+05:30  INFO 15828 --- [execution-service] [ntainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : chronos-execution-service: partitions assigned: []
+2026-08-14T22:17:52.044+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : chronos-execution-service: partitions assigned: []
+2026-08-14T22:17:52.046+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] Revoke previously assigned partitions 
+2026-08-14T22:17:52.047+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : chronos-execution-service: partitions revoked: []
+2026-08-14T22:17:52.048+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Adding newly assigned partitions: job.triggered-0
+2026-08-14T22:17:52.049+05:30  INFO 15828 --- [execution-service] [ntainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-3, groupId=chronos-execution-service] (Re-)joining group
+2026-08-14T22:17:52.076+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Found no committed offset for partition job.triggered-0
+2026-08-14T22:17:52.107+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-chronos-execution-service-1, groupId=chronos-execution-service] Resetting offset for partition job.triggered-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:9092 (id: 1 rack: null)], epoch=0}}.
+2026-08-14T22:17:52.110+05:30  INFO 15828 --- [execution-service] [ntainer#2-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : chronos-execution-service: partitions assigned: [job.triggered-0]
 ]]></system-out>
-    <system-err><![CDATA[Aug 14, 2026 10:09:38 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+    <system-err><![CDATA[Aug 14, 2026 10:17:39 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
 WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
-Aug 14, 2026 10:09:38 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+Aug 14, 2026 10:17:39 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
 WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
-Aug 14, 2026 10:09:38 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+Aug 14, 2026 10:17:40 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
 WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
-Aug 14, 2026 10:09:38 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+Aug 14, 2026 10:17:40 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
 WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
-Aug 14, 2026 10:09:38 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+Aug 14, 2026 10:17:40 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
 WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
-Aug 14, 2026 10:09:38 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+Aug 14, 2026 10:17:40 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
 WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
 WARNING: A Java agent has been loaded dynamically (C:\Users\naaji\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.18\byte-buddy-agent-1.14.18.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
@@ -233,19 +471,129 @@ WARNING: If a serviceability tool is not in use, please run with -Djdk.instrumen
 WARNING: Dynamic loading of agents will be disallowed by default in a future release
 ]]></system-err>
   </testcase>
-  <testcase name="testGetExecutionsByJobIdWorks" classname="com.chronos.execution.controller.ExecutionControllerTest" time="0.181">
-    <system-out><![CDATA[2026-08-14T22:09:50.691+05:30  INFO 20496 --- [execution-service] [           main] c.c.execution.service.ExecutionService   : Execution created: executionId=9d8026f1-27a5-41ee-abf0-72ea07f38c14, jobId=7378a67b-b8c7-4e93-b717-0b59e434a5d9, organizationId=ee7a6ed4-3c4d-4d43-ab6a-e7b4c18134d3, status=PENDING
-2026-08-14T22:09:50.701+05:30  INFO 20496 --- [execution-service] [           main] c.c.execution.service.ExecutionService   : Execution created: executionId=815bc65e-36c9-429a-847e-220b7bff678d, jobId=7378a67b-b8c7-4e93-b717-0b59e434a5d9, organizationId=ee7a6ed4-3c4d-4d43-ab6a-e7b4c18134d3, status=PENDING
+  <testcase name="testGetExecutionsByJobIdWorks" classname="com.chronos.execution.controller.ExecutionControllerTest" time="0.578">
+    <system-out><![CDATA[2026-08-14T22:17:52.290+05:30  INFO 15828 --- [execution-service] [           main] c.c.execution.service.ExecutionService   : Execution created: executionId=4de7a029-c861-4131-a9b5-44a95e7cab6a, jobId=9f51db40-44f5-4d72-b416-00f22e674ca5, organizationId=2a63bc10-2fdd-4d23-8b62-478e2d44a586, status=PENDING
+2026-08-14T22:17:52.290+05:30  INFO 15828 --- [execution-service] [           main] c.c.e.k.KafkaExecutionDispatchProducer   : Publishing execution.dispatch event to topic 'execution.dispatch': executionId=4de7a029-c861-4131-a9b5-44a95e7cab6a, jobId=9f51db40-44f5-4d72-b416-00f22e674ca5, organizationId=2a63bc10-2fdd-4d23-8b62-478e2d44a586
+2026-08-14T22:17:52.307+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = -1
+	auto.include.jmx.reporter = true
+	batch.size = 16384
+	bootstrap.servers = [localhost:9092]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = execution-service-producer-1
+	compression.type = none
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = true
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.springframework.kafka.support.serializer.JsonSerializer
+
+2026-08-14T22:17:52.307+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-08-14T22:17:52.328+05:30  INFO 15828 --- [execution-service] [           main] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=execution-service-producer-1] Instantiated an idempotent producer.
+2026-08-14T22:17:52.357+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.7.1
+2026-08-14T22:17:52.357+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: e2494e6ffb89f828
+2026-08-14T22:17:52.357+05:30  INFO 15828 --- [execution-service] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1786726072357
+2026-08-14T22:17:52.382+05:30  WARN 15828 --- [execution-service] [vice-producer-1] org.apache.kafka.clients.NetworkClient   : [Producer clientId=execution-service-producer-1] Error while fetching metadata with correlation id 1 : {execution.dispatch=UNKNOWN_TOPIC_OR_PARTITION}
+2026-08-14T22:17:52.382+05:30  INFO 15828 --- [execution-service] [vice-producer-1] org.apache.kafka.clients.Metadata        : [Producer clientId=execution-service-producer-1] Cluster ID: Some(5L6g3nShT-eMCtK--X86sw)
+2026-08-14T22:17:52.604+05:30  INFO 15828 --- [execution-service] [vice-producer-1] o.a.k.c.p.internals.TransactionManager   : [Producer clientId=execution-service-producer-1] ProducerId set to 0 with epoch 0
+2026-08-14T22:17:52.636+05:30  INFO 15828 --- [execution-service] [           main] c.c.execution.service.ExecutionService   : Execution created: executionId=b23fde55-7fae-421a-b174-3405afe692db, jobId=9f51db40-44f5-4d72-b416-00f22e674ca5, organizationId=2a63bc10-2fdd-4d23-8b62-478e2d44a586, status=PENDING
+2026-08-14T22:17:52.637+05:30  INFO 15828 --- [execution-service] [           main] c.c.e.k.KafkaExecutionDispatchProducer   : Publishing execution.dispatch event to topic 'execution.dispatch': executionId=b23fde55-7fae-421a-b174-3405afe692db, jobId=9f51db40-44f5-4d72-b416-00f22e674ca5, organizationId=2a63bc10-2fdd-4d23-8b62-478e2d44a586
 ]]></system-out>
   </testcase>
-  <testcase name="testGetExecutionByIdWorksAndEnforcesOrganizationIsolation" classname="com.chronos.execution.controller.ExecutionControllerTest" time="0.037">
-    <system-out><![CDATA[2026-08-14T22:09:50.819+05:30  INFO 20496 --- [execution-service] [           main] c.c.execution.service.ExecutionService   : Execution created: executionId=ca21a2b5-c0b8-4e65-86de-f56ed92e90f2, jobId=4bb41960-c432-40ab-a4e9-aafe208c28b6, organizationId=d25e9a36-2e23-4daf-b3ed-040bc7d1dfe3, status=PENDING
-2026-08-14T22:09:50.829+05:30  WARN 20496 --- [execution-service] [           main] c.c.e.exception.GlobalExceptionHandler   : Resource not found: Execution not found with ID: ca21a2b5-c0b8-4e65-86de-f56ed92e90f2
+  <testcase name="testGetExecutionByIdWorksAndEnforcesOrganizationIsolation" classname="com.chronos.execution.controller.ExecutionControllerTest" time="0.095">
+    <system-out><![CDATA[2026-08-14T22:17:52.774+05:30  INFO 15828 --- [execution-service] [vice-producer-1] c.c.e.k.KafkaExecutionDispatchProducer   : Successfully published execution.dispatch event for executionId=4de7a029-c861-4131-a9b5-44a95e7cab6a to topic 'execution.dispatch' [partition=0, offset=0]
+2026-08-14T22:17:52.805+05:30  INFO 15828 --- [execution-service] [           main] c.c.execution.service.ExecutionService   : Execution created: executionId=9927b278-25a9-4f40-a122-7c1458d5048d, jobId=b85f7514-e3fa-44d1-a069-e840eb98470d, organizationId=3ff1ba3e-2bc6-4ff9-b75f-e158ba1f3686, status=PENDING
+2026-08-14T22:17:52.805+05:30  INFO 15828 --- [execution-service] [           main] c.c.e.k.KafkaExecutionDispatchProducer   : Publishing execution.dispatch event to topic 'execution.dispatch': executionId=9927b278-25a9-4f40-a122-7c1458d5048d, jobId=b85f7514-e3fa-44d1-a069-e840eb98470d, organizationId=3ff1ba3e-2bc6-4ff9-b75f-e158ba1f3686
+2026-08-14T22:17:52.833+05:30  INFO 15828 --- [execution-service] [vice-producer-1] c.c.e.k.KafkaExecutionDispatchProducer   : Successfully published execution.dispatch event for executionId=b23fde55-7fae-421a-b174-3405afe692db to topic 'execution.dispatch' [partition=0, offset=1]
+2026-08-14T22:17:52.842+05:30  INFO 15828 --- [execution-service] [vice-producer-1] c.c.e.k.KafkaExecutionDispatchProducer   : Successfully published execution.dispatch event for executionId=9927b278-25a9-4f40-a122-7c1458d5048d to topic 'execution.dispatch' [partition=0, offset=2]
+2026-08-14T22:17:52.846+05:30  WARN 15828 --- [execution-service] [           main] c.c.e.exception.GlobalExceptionHandler   : Resource not found: Execution not found with ID: 9927b278-25a9-4f40-a122-7c1458d5048d
 ]]></system-out>
   </testcase>
-  <testcase name="testGetAllExecutionsReturnsOnlyCurrentOrganizationExecutions" classname="com.chronos.execution.controller.ExecutionControllerTest" time="0.058">
-    <system-out><![CDATA[2026-08-14T22:09:50.854+05:30  INFO 20496 --- [execution-service] [           main] c.c.execution.service.ExecutionService   : Execution created: executionId=6e3ca8f4-fb83-48ca-8b63-085d153d5346, jobId=e585ec00-74ff-4625-b793-4bb047b04ae2, organizationId=e32269bd-d092-4e08-99d5-db23b9ca1229, status=PENDING
-2026-08-14T22:09:50.862+05:30  INFO 20496 --- [execution-service] [           main] c.c.execution.service.ExecutionService   : Execution created: executionId=a22d1cc6-59fb-4de7-946e-efdf3909ae8f, jobId=f4b0280a-4afe-47cc-9bfb-adda52468f4e, organizationId=e2dfdea2-74df-4fb8-aef7-ccf188223603, status=PENDING
+  <testcase name="testGetAllExecutionsReturnsOnlyCurrentOrganizationExecutions" classname="com.chronos.execution.controller.ExecutionControllerTest" time="0.093">
+    <system-out><![CDATA[2026-08-14T22:17:52.882+05:30  INFO 15828 --- [execution-service] [           main] c.c.execution.service.ExecutionService   : Execution created: executionId=3a04b3ba-db3a-4ea5-afb1-91a75ae2ca07, jobId=86cfeb62-9610-4410-9eda-8904b8712d02, organizationId=47acef74-1809-4acc-8d24-4983eb432f73, status=PENDING
+2026-08-14T22:17:52.882+05:30  INFO 15828 --- [execution-service] [           main] c.c.e.k.KafkaExecutionDispatchProducer   : Publishing execution.dispatch event to topic 'execution.dispatch': executionId=3a04b3ba-db3a-4ea5-afb1-91a75ae2ca07, jobId=86cfeb62-9610-4410-9eda-8904b8712d02, organizationId=47acef74-1809-4acc-8d24-4983eb432f73
+2026-08-14T22:17:52.897+05:30  INFO 15828 --- [execution-service] [           main] c.c.execution.service.ExecutionService   : Execution created: executionId=f7e17cb0-edf4-47b3-94fe-e31592055d7a, jobId=67b4ba43-5af6-4b85-908f-aa374af0f136, organizationId=4dd7a676-988e-4856-abdc-50945fe8892c, status=PENDING
+2026-08-14T22:17:52.897+05:30  INFO 15828 --- [execution-service] [vice-producer-1] c.c.e.k.KafkaExecutionDispatchProducer   : Successfully published execution.dispatch event for executionId=3a04b3ba-db3a-4ea5-afb1-91a75ae2ca07 to topic 'execution.dispatch' [partition=0, offset=3]
+2026-08-14T22:17:52.897+05:30  INFO 15828 --- [execution-service] [           main] c.c.e.k.KafkaExecutionDispatchProducer   : Publishing execution.dispatch event to topic 'execution.dispatch': executionId=f7e17cb0-edf4-47b3-94fe-e31592055d7a, jobId=67b4ba43-5af6-4b85-908f-aa374af0f136, organizationId=4dd7a676-988e-4856-abdc-50945fe8892c
+2026-08-14T22:17:52.927+05:30  INFO 15828 --- [execution-service] [vice-producer-1] c.c.e.k.KafkaExecutionDispatchProducer   : Successfully published execution.dispatch event for executionId=f7e17cb0-edf4-47b3-94fe-e31592055d7a to topic 'execution.dispatch' [partition=0, offset=4]
 ]]></system-out>
   </testcase>
 </testsuite>

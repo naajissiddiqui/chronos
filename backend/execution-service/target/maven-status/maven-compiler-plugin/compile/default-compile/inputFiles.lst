@@ -4,6 +4,9 @@ C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\control
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\dto\ExecutionResponse.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\entity\Execution.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\entity\ExecutionStatus.java
+C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\event\ExecutionCompletedEvent.java
+C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\event\ExecutionDispatchedEvent.java
+C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\event\ExecutionFailedEvent.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\event\JobTriggeredEvent.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\exception\ErrorResponse.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\exception\GlobalExceptionHandler.java
@@ -11,6 +14,8 @@ C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\excepti
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\exception\ResourceNotFoundException.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\exception\UnauthorizedException.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\ExecutionServiceApplication.java
+C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\kafka\KafkaExecutionDispatchProducer.java
+C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\kafka\KafkaExecutionResultConsumer.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\kafka\KafkaJobTriggerConsumer.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\repository\ExecutionRepository.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\service\ExecutionService.java

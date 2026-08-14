@@ -20,6 +20,8 @@ public class ExecutionResponse {
     private Instant createdAt;
     private Instant updatedAt;
     private String errorMessage;
+    private String workerId;
+    private String result;
 
     public ExecutionResponse() {
     }
@@ -41,6 +43,8 @@ public class ExecutionResponse {
         response.setCreatedAt(execution.getCreatedAt());
         response.setUpdatedAt(execution.getUpdatedAt());
         response.setErrorMessage(execution.getErrorMessage());
+        response.setWorkerId(execution.getWorkerId());
+        response.setResult(execution.getResult());
         return response;
     }
 
@@ -138,5 +142,21 @@ public class ExecutionResponse {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public String getWorkerId() {
+        return workerId;
+    }
+
+    public void setWorkerId(String workerId) {
+        this.workerId = workerId;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 }
