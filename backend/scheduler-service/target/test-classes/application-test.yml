@@ -14,5 +14,23 @@ spring:
           time_zone: UTC
     show-sql: false
 
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers:localhost:9092}
+    consumer:
+      group-id: chronos-scheduler-test-consumer
+      auto-offset-reset: earliest
+      auto-startup: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
 scheduler:
   polling-interval-ms: 5000
+
+kafka:
+  topics:
+    job-triggered: job.triggered

@@ -1,8 +1,11 @@
 com\chronos\scheduler\service\CronCalculationService.class
 com\chronos\scheduler\service\JobSchedulerService.class
-com\chronos\scheduler\entity\Job.class
-com\chronos\scheduler\SchedulerServiceApplication.class
 com\chronos\scheduler\entity\JobStatus.class
 com\chronos\scheduler\repository\JobRepository.class
+com\chronos\scheduler\entity\Job.class
+com\chronos\scheduler\SchedulerServiceApplication.class
+com\chronos\scheduler\kafka\KafkaJobTriggerProducer.class
 com\chronos\scheduler\entity\JobPriority.class
 com\chronos\scheduler\scheduler\JobPollingScheduler.class
+com\chronos\scheduler\event\JobTriggeredEvent.class
+com\chronos\scheduler\kafka\KafkaJobTriggerConsumer.class

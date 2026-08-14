@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.chronos.scheduler.scheduler.JobPollingSchedulerTest" time="0.064" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.chronos.scheduler.kafka.KafkaJobTriggerConsumerTest" time="0.115" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -58,8 +58,29 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testPollDueJobsInvokesService" classname="com.chronos.scheduler.scheduler.JobPollingSchedulerTest" time="0.062">
-    <system-out><![CDATA[21:59:21.796 [main] INFO com.chronos.scheduler.scheduler.JobPollingScheduler -- Job polling run completed. Processed 3 due job(s).
+  <testcase name="testConsumeEventLogsWithoutError" classname="com.chronos.scheduler.kafka.KafkaJobTriggerConsumerTest" time="0.077">
+    <system-out><![CDATA[21:59:20.462 [main] INFO com.chronos.scheduler.kafka.KafkaJobTriggerConsumer -- Received job.triggered event: eventId=cd879aed-83d1-4e52-8328-20593f20bea9, jobId=763fb5bd-6dd4-4454-b8dc-48cea7551f97, organizationId=55eda7cf-db9c-44a5-a340-3fc54e7a28cc, scheduledAt=2026-08-14T16:29:20.456950Z, triggeredAt=2026-08-14T16:29:20.456950Z, priority=NORMAL
+]]></system-out>
+    <system-err><![CDATA[Aug 14, 2026 9:59:19 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
+Aug 14, 2026 9:59:19 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
+Aug 14, 2026 9:59:20 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
+Aug 14, 2026 9:59:20 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
+Aug 14, 2026 9:59:20 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
+Aug 14, 2026 9:59:20 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
+Aug 14, 2026 9:59:20 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
+Aug 14, 2026 9:59:20 PM org.junit.platform.launcher.core.LauncherConfigurationParameters loadClasspathResource
+WARNING: Discovered 2 'junit-platform.properties' configuration files in the classpath; only the first will be used.
+]]></system-err>
+  </testcase>
+  <testcase name="testConsumeNullEventHandlesGracefully" classname="com.chronos.scheduler.kafka.KafkaJobTriggerConsumerTest" time="0.003">
+    <system-out><![CDATA[21:59:20.477 [main] WARN com.chronos.scheduler.kafka.KafkaJobTriggerConsumer -- Received null JobTriggeredEvent from Kafka
 ]]></system-out>
   </testcase>
 </testsuite>
