@@ -1,13 +1,13 @@
 package com.chronos.execution.service;
 
-import com.chronos.execution.dto.ExecutionResponse;
+import com.chronos.execution.client.JobServiceClient;
+import com.chronos.execution.dto.JobRetryConfigDto;
 import com.chronos.execution.entity.Execution;
 import com.chronos.execution.entity.ExecutionStatus;
-import com.chronos.execution.event.ExecutionCompletedEvent;
-import com.chronos.execution.event.ExecutionDispatchedEvent;
-import com.chronos.execution.event.ExecutionFailedEvent;
-import com.chronos.execution.event.JobTriggeredEvent;
+import com.chronos.execution.event.*;
 import com.chronos.execution.kafka.KafkaExecutionDispatchProducer;
+import com.chronos.execution.kafka.KafkaExecutionDlqProducer;
+import com.chronos.execution.kafka.KafkaExecutionRetryProducer;
 import com.chronos.execution.repository.ExecutionRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,13 +19,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -42,6 +43,15 @@ class ExecutionServiceTest {
     @MockBean
     private KafkaExecutionDispatchProducer kafkaExecutionDispatchProducer;
 
+    @MockBean
+    private KafkaExecutionRetryProducer kafkaExecutionRetryProducer;
+
+    @MockBean
+    private KafkaExecutionDlqProducer kafkaExecutionDlqProducer;
+
+    @MockBean
+    private JobServiceClient jobServiceClient;
+
     @BeforeAll
     static void initUtc() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
@@ -50,7 +60,8 @@ class ExecutionServiceTest {
     @BeforeEach
     void setUp() {
         executionRepository.deleteAll();
-        reset(kafkaExecutionDispatchProducer);
+        reset(kafkaExecutionDispatchProducer, kafkaExecutionRetryProducer, kafkaExecutionDlqProducer, jobServiceClient);
+        when(jobServiceClient.getJobRetryConfig(any(), any())).thenReturn(new JobRetryConfigDto(3, 10));
     }
 
     @Test
@@ -110,15 +121,17 @@ class ExecutionServiceTest {
         assertEquals(ExecutionStatus.SUCCEEDED, updated.getStatus());
         assertEquals("worker-local-1", updated.getWorkerId());
         assertEquals("Demo report generated successfully", updated.getResult());
+        verify(kafkaExecutionRetryProducer, never()).sendExecutionRetry(any());
+        verify(kafkaExecutionDlqProducer, never()).sendExecutionDlq(any());
     }
 
     @Test
-    void testHandleExecutionFailedUpdatesStatusToFailed() {
+    void testFirstExecutionFailureTriggersRetryAndCalculatesExponentialBackoff() {
         UUID eventId = UUID.randomUUID();
         UUID jobId = UUID.randomUUID();
         UUID orgId = UUID.randomUUID();
 
-        JobTriggeredEvent event = new JobTriggeredEvent(eventId, jobId, orgId, Instant.now(), Instant.now(), "HIGH");
+        JobTriggeredEvent event = new JobTriggeredEvent(eventId, jobId, orgId, Instant.now(), Instant.now(), "NORMAL");
         Execution execution = executionService.createExecutionFromEvent(event).orElseThrow();
 
         ExecutionFailedEvent failedEvent = new ExecutionFailedEvent(
@@ -128,15 +141,127 @@ class ExecutionServiceTest {
                 "worker-local-1",
                 1,
                 Instant.now(),
-                "Unsupported task type: INVALID"
+                "Error processing report"
+        );
+
+        executionService.handleExecutionFailed(failedEvent);
+
+        Execution updated = executionRepository.findById(execution.getId()).orElseThrow();
+        assertEquals(ExecutionStatus.RETRY_SCHEDULED, updated.getStatus());
+        assertEquals(2, updated.getAttempt()); // Next attempt set to 2
+        assertNotNull(updated.getNextAttemptAt());
+
+        // Initial attempt 1 failed with base backoff 10s: delay = 10 * 2^0 = 10s
+        long delaySeconds = Duration.between(Instant.now(), updated.getNextAttemptAt()).getSeconds();
+        assertTrue(delaySeconds >= 8 && delaySeconds <= 12, "Backoff delay should be approx 10s, got " + delaySeconds);
+
+        ArgumentCaptor<ExecutionRetryEvent> captor = ArgumentCaptor.forClass(ExecutionRetryEvent.class);
+        verify(kafkaExecutionRetryProducer, times(1)).sendExecutionRetry(captor.capture());
+        ExecutionRetryEvent retryEvent = captor.getValue();
+        assertEquals(execution.getId(), retryEvent.getExecutionId());
+        assertEquals(2, retryEvent.getAttempt());
+    }
+
+    @Test
+    void testSecondExecutionFailureCalculatesExponentialBackoffCorrectly() {
+        UUID eventId = UUID.randomUUID();
+        UUID jobId = UUID.randomUUID();
+        UUID orgId = UUID.randomUUID();
+
+        JobTriggeredEvent event = new JobTriggeredEvent(eventId, jobId, orgId, Instant.now(), Instant.now(), "NORMAL");
+        Execution execution = executionService.createExecutionFromEvent(event).orElseThrow();
+
+        // Simulate attempt 2 failing
+        execution.setAttempt(2);
+        execution.setStatus(ExecutionStatus.PENDING);
+        executionRepository.saveAndFlush(execution);
+
+        ExecutionFailedEvent failedEvent = new ExecutionFailedEvent(
+                execution.getId(),
+                jobId,
+                orgId,
+                "worker-local-1",
+                2,
+                Instant.now(),
+                "Error on attempt 2"
+        );
+
+        executionService.handleExecutionFailed(failedEvent);
+
+        Execution updated = executionRepository.findById(execution.getId()).orElseThrow();
+        assertEquals(ExecutionStatus.RETRY_SCHEDULED, updated.getStatus());
+        assertEquals(3, updated.getAttempt());
+
+        // Attempt 2 failed with base backoff 10s: delay = 10 * 2^1 = 20s
+        long delaySeconds = Duration.between(Instant.now(), updated.getNextAttemptAt()).getSeconds();
+        assertTrue(delaySeconds >= 18 && delaySeconds <= 22, "Backoff delay for attempt 2 should be approx 20s, got " + delaySeconds);
+    }
+
+    @Test
+    void testFailureAfterMaxRetriesExhaustedRoutesToDlq() {
+        UUID eventId = UUID.randomUUID();
+        UUID jobId = UUID.randomUUID();
+        UUID orgId = UUID.randomUUID();
+
+        JobTriggeredEvent event = new JobTriggeredEvent(eventId, jobId, orgId, Instant.now(), Instant.now(), "NORMAL");
+        Execution execution = executionService.createExecutionFromEvent(event).orElseThrow();
+
+        // Simulate attempt 4 failing (where maxRetries = 3)
+        execution.setAttempt(4);
+        execution.setStatus(ExecutionStatus.PENDING);
+        executionRepository.saveAndFlush(execution);
+
+        ExecutionFailedEvent failedEvent = new ExecutionFailedEvent(
+                execution.getId(),
+                jobId,
+                orgId,
+                "worker-local-1",
+                4,
+                Instant.now(),
+                "Final error on attempt 4"
         );
 
         executionService.handleExecutionFailed(failedEvent);
 
         Execution updated = executionRepository.findById(execution.getId()).orElseThrow();
         assertEquals(ExecutionStatus.FAILED, updated.getStatus());
-        assertEquals("worker-local-1", updated.getWorkerId());
-        assertEquals("Unsupported task type: INVALID", updated.getErrorMessage());
+
+        verify(kafkaExecutionRetryProducer, never()).sendExecutionRetry(any());
+        ArgumentCaptor<ExecutionDlqEvent> captor = ArgumentCaptor.forClass(ExecutionDlqEvent.class);
+        verify(kafkaExecutionDlqProducer, times(1)).sendExecutionDlq(captor.capture());
+
+        ExecutionDlqEvent dlqEvent = captor.getValue();
+        assertEquals(execution.getId(), dlqEvent.getExecutionId());
+        assertEquals(4, dlqEvent.getFinalAttempt());
+        assertEquals("worker-local-1", dlqEvent.getLastWorkerId());
+    }
+
+    @Test
+    void testDuplicateFailureEventDoesNotScheduleDuplicateRetry() {
+        UUID eventId = UUID.randomUUID();
+        UUID jobId = UUID.randomUUID();
+        UUID orgId = UUID.randomUUID();
+
+        JobTriggeredEvent event = new JobTriggeredEvent(eventId, jobId, orgId, Instant.now(), Instant.now(), "NORMAL");
+        Execution execution = executionService.createExecutionFromEvent(event).orElseThrow();
+
+        ExecutionFailedEvent failedEvent = new ExecutionFailedEvent(
+                execution.getId(),
+                jobId,
+                orgId,
+                "worker-local-1",
+                1,
+                Instant.now(),
+                "Error processing report"
+        );
+
+        // First failure event
+        executionService.handleExecutionFailed(failedEvent);
+
+        // Duplicate failure event
+        executionService.handleExecutionFailed(failedEvent);
+
+        verify(kafkaExecutionRetryProducer, times(1)).sendExecutionRetry(any());
     }
 
     @Test

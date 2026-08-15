@@ -16,6 +16,8 @@ spring:
 
   kafka:
     bootstrap-servers: ${spring.embedded.kafka.brokers:localhost:9092}
+    listener:
+      auto-startup: false
     consumer:
       group-id: chronos-execution-service
       auto-offset-reset: earliest
@@ -34,3 +36,8 @@ kafka:
     execution-dispatch: execution.dispatch
     execution-completed: execution.completed
     execution-failed: execution.failed
+    execution-retry: execution.retry
+    execution-dlq: execution.dlq
+
+job-service:
+  url: http://localhost:8082

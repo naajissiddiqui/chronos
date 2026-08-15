@@ -8,6 +8,18 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class ExecutionServiceApplicationTests {
 
+    @org.springframework.boot.test.mock.mockito.MockBean
+    private com.chronos.execution.kafka.KafkaExecutionDispatchProducer kafkaExecutionDispatchProducer;
+
+    @org.springframework.boot.test.mock.mockito.MockBean
+    private com.chronos.execution.kafka.KafkaExecutionRetryProducer kafkaExecutionRetryProducer;
+
+    @org.springframework.boot.test.mock.mockito.MockBean
+    private com.chronos.execution.kafka.KafkaExecutionDlqProducer kafkaExecutionDlqProducer;
+
+    @org.springframework.boot.test.mock.mockito.MockBean
+    private com.chronos.execution.client.JobServiceClient jobServiceClient;
+
     @Test
     void contextLoads() {
     }

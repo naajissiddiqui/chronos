@@ -20,4 +20,6 @@ public interface ExecutionRepository extends JpaRepository<Execution, UUID> {
     boolean existsBySourceEventId(UUID sourceEventId);
 
     Optional<Execution> findBySourceEventId(UUID sourceEventId);
+
+    List<Execution> findByStatusAndNextAttemptAtLessThanEqual(com.chronos.execution.entity.ExecutionStatus status, java.time.Instant now);
 }

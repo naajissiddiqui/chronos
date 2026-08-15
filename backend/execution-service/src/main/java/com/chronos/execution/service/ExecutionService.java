@@ -1,14 +1,15 @@
 package com.chronos.execution.service;
 
+import com.chronos.execution.client.JobServiceClient;
 import com.chronos.execution.dto.ExecutionResponse;
+import com.chronos.execution.dto.JobRetryConfigDto;
 import com.chronos.execution.entity.Execution;
 import com.chronos.execution.entity.ExecutionStatus;
-import com.chronos.execution.event.ExecutionCompletedEvent;
-import com.chronos.execution.event.ExecutionDispatchedEvent;
-import com.chronos.execution.event.ExecutionFailedEvent;
-import com.chronos.execution.event.JobTriggeredEvent;
+import com.chronos.execution.event.*;
 import com.chronos.execution.exception.ResourceNotFoundException;
 import com.chronos.execution.kafka.KafkaExecutionDispatchProducer;
+import com.chronos.execution.kafka.KafkaExecutionDlqProducer;
+import com.chronos.execution.kafka.KafkaExecutionRetryProducer;
 import com.chronos.execution.repository.ExecutionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +30,20 @@ public class ExecutionService {
 
     private final ExecutionRepository executionRepository;
     private final KafkaExecutionDispatchProducer kafkaExecutionDispatchProducer;
+    private final KafkaExecutionRetryProducer kafkaExecutionRetryProducer;
+    private final KafkaExecutionDlqProducer kafkaExecutionDlqProducer;
+    private final JobServiceClient jobServiceClient;
 
     public ExecutionService(ExecutionRepository executionRepository,
-                            KafkaExecutionDispatchProducer kafkaExecutionDispatchProducer) {
+                            KafkaExecutionDispatchProducer kafkaExecutionDispatchProducer,
+                            KafkaExecutionRetryProducer kafkaExecutionRetryProducer,
+                            KafkaExecutionDlqProducer kafkaExecutionDlqProducer,
+                            JobServiceClient jobServiceClient) {
         this.executionRepository = executionRepository;
         this.kafkaExecutionDispatchProducer = kafkaExecutionDispatchProducer;
+        this.kafkaExecutionRetryProducer = kafkaExecutionRetryProducer;
+        this.kafkaExecutionDlqProducer = kafkaExecutionDlqProducer;
+        this.jobServiceClient = jobServiceClient;
     }
 
     @Transactional
@@ -65,13 +75,18 @@ public class ExecutionService {
             logger.info("Execution created: executionId={}, jobId={}, organizationId={}, status=PENDING",
                     saved.getId(), saved.getJobId(), saved.getOrganizationId());
 
+            String taskType = "DEMO_REPORT";
+            if (event.getPriority() != null && event.getPriority().toUpperCase().contains("FAIL")) {
+                taskType = "DEMO_REPORT_FAIL";
+            }
+
             // Dispatch execution to Kafka ONLY AFTER successful DB persistence
             ExecutionDispatchedEvent dispatchEvent = new ExecutionDispatchedEvent(
                     saved.getId(),
                     saved.getJobId(),
                     saved.getOrganizationId(),
                     saved.getAttempt(),
-                    "DEMO_REPORT",
+                    taskType,
                     "Demo report payload for jobId=" + saved.getJobId(),
                     Instant.now()
             );
@@ -126,19 +141,78 @@ public class ExecutionService {
         }
 
         Execution execution = opt.get();
-        if (execution.getStatus() == ExecutionStatus.SUCCEEDED || execution.getStatus() == ExecutionStatus.FAILED) {
-            logger.info("Execution already in terminal state ({}) for executionId={}, skipping duplicate failure event",
+        if (execution.getStatus() == ExecutionStatus.SUCCEEDED ||
+                execution.getStatus() == ExecutionStatus.FAILED ||
+                execution.getStatus() == ExecutionStatus.RETRY_SCHEDULED) {
+            logger.info("Execution already in terminal state or retry scheduled ({}) for executionId={}, skipping duplicate failure event",
                     execution.getStatus(), execution.getId());
             return;
         }
 
-        execution.setStatus(ExecutionStatus.FAILED);
-        execution.setCompletedAt(event.getFailedAt() != null ? event.getFailedAt() : Instant.now());
-        execution.setErrorMessage(event.getErrorMessage());
-        execution.setWorkerId(event.getWorkerId());
+        int currentAttempt = event.getAttempt() != null ? event.getAttempt() : execution.getAttempt();
+        logger.info("Execution failed: executionId={}, attempt={}", execution.getId(), currentAttempt);
 
-        executionRepository.saveAndFlush(execution);
-        logger.info("Execution failed: executionId={}, status=FAILED, workerId={}", execution.getId(), execution.getWorkerId());
+        // Fetch Job retry configuration
+        JobRetryConfigDto jobConfig = jobServiceClient.getJobRetryConfig(execution.getJobId(), execution.getOrganizationId());
+        int maxRetries = jobConfig.getMaxRetries() != null ? jobConfig.getMaxRetries() : 3;
+        int baseBackoffSeconds = jobConfig.getRetryBackoffSeconds() != null ? jobConfig.getRetryBackoffSeconds() : 10;
+
+        boolean isRetryAvailable = currentAttempt <= maxRetries;
+
+        if (isRetryAvailable) {
+            // Calculate exponential backoff delay: delay = baseBackoffSeconds * 2^(currentAttempt - 1)
+            long backoffDelaySeconds = (long) (baseBackoffSeconds * Math.pow(2, currentAttempt - 1));
+            int nextAttempt = currentAttempt + 1;
+            Instant retryAt = Instant.now().plusSeconds(backoffDelaySeconds);
+
+            execution.setStatus(ExecutionStatus.RETRY_SCHEDULED);
+            execution.setAttempt(nextAttempt);
+            execution.setNextAttemptAt(retryAt);
+            execution.setErrorMessage(event.getErrorMessage());
+            execution.setWorkerId(event.getWorkerId());
+
+            executionRepository.saveAndFlush(execution);
+            logger.info("Retry scheduled: executionId={}, nextAttempt={}, retryAt={}", execution.getId(), nextAttempt, retryAt);
+
+            String taskType = "DEMO_REPORT";
+            if (event.getErrorMessage() != null && event.getErrorMessage().contains("DEMO_REPORT_FAIL")) {
+                taskType = "DEMO_REPORT_FAIL";
+            }
+
+            ExecutionRetryEvent retryEvent = new ExecutionRetryEvent(
+                    execution.getId(),
+                    execution.getJobId(),
+                    execution.getOrganizationId(),
+                    nextAttempt,
+                    retryAt,
+                    event.getErrorMessage(),
+                    Instant.now(),
+                    taskType,
+                    null
+            );
+            kafkaExecutionRetryProducer.sendExecutionRetry(retryEvent);
+        } else {
+            execution.setStatus(ExecutionStatus.FAILED);
+            execution.setCompletedAt(event.getFailedAt() != null ? event.getFailedAt() : Instant.now());
+            execution.setErrorMessage(event.getErrorMessage());
+            execution.setWorkerId(event.getWorkerId());
+
+            executionRepository.saveAndFlush(execution);
+            logger.info("Max retries exhausted: executionId={}", execution.getId());
+
+            ExecutionDlqEvent dlqEvent = new ExecutionDlqEvent(
+                    execution.getId(),
+                    execution.getJobId(),
+                    execution.getOrganizationId(),
+                    currentAttempt,
+                    "Max retries exhausted",
+                    Instant.now(),
+                    event.getWorkerId(),
+                    event.getErrorMessage()
+            );
+            kafkaExecutionDlqProducer.sendExecutionDlq(dlqEvent);
+            logger.info("Published to DLQ: executionId={}", execution.getId());
+        }
     }
 
     @Transactional(readOnly = true)
