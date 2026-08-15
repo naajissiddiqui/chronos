@@ -68,6 +68,12 @@ public class Execution {
     @Column(name = "result", length = 1000)
     private String result;
 
+    @Column(name = "next_attempt_at")
+    private Instant nextAttemptAt;
+
+    @Version
+    private Long version;
+
     public Execution() {
     }
 
@@ -190,5 +196,21 @@ public class Execution {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public Instant getNextAttemptAt() {
+        return nextAttemptAt;
+    }
+
+    public void setNextAttemptAt(Instant nextAttemptAt) {
+        this.nextAttemptAt = nextAttemptAt;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

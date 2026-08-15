@@ -23,7 +23,7 @@ public class KafkaExecutionDispatchConsumer {
     private final String workerId;
     private final DemoReportTaskHandler demoReportTaskHandler;
     private final KafkaWorkerResultProducer resultProducer;
-    private final Set<UUID> processedExecutions = ConcurrentHashMap.newKeySet();
+    private final Set<String> processedExecutionAttempts = ConcurrentHashMap.newKeySet();
 
     public KafkaExecutionDispatchConsumer(
             @Value("${worker.id:worker-local-1}") String workerId,
@@ -44,17 +44,20 @@ public class KafkaExecutionDispatchConsumer {
             return;
         }
 
-        logger.info("Worker {} received execution: executionId={}, jobId={}, organizationId={}, attempt={}, taskType={}",
-                workerId, event.getExecutionId(), event.getJobId(), event.getOrganizationId(), event.getAttempt(), event.getTaskType());
+        int attempt = event.getAttempt() != null ? event.getAttempt() : 1;
+        String idempotencyKey = event.getExecutionId() + ":" + attempt;
 
-        // Idempotency check: prevent duplicate processing on local worker instance
-        if (!processedExecutions.add(event.getExecutionId())) {
-            logger.info("Worker {} skipping duplicate execution event: executionId={}", workerId, event.getExecutionId());
+        logger.info("Worker {} received execution: executionId={}, jobId={}, organizationId={}, attempt={}, taskType={}",
+                workerId, event.getExecutionId(), event.getJobId(), event.getOrganizationId(), attempt, event.getTaskType());
+
+        // Idempotency check: prevent duplicate processing of the same execution attempt on local worker instance
+        if (!processedExecutionAttempts.add(idempotencyKey)) {
+            logger.info("Worker {} skipping duplicate execution attempt event: key={}", workerId, idempotencyKey);
             return;
         }
 
         try {
-            if ("DEMO_REPORT".equalsIgnoreCase(event.getTaskType())) {
+            if ("DEMO_REPORT".equalsIgnoreCase(event.getTaskType()) || "DEMO_REPORT_FAIL".equalsIgnoreCase(event.getTaskType())) {
                 String result = demoReportTaskHandler.execute(event);
 
                 ExecutionCompletedEvent completedEvent = new ExecutionCompletedEvent(
@@ -62,7 +65,7 @@ public class KafkaExecutionDispatchConsumer {
                         event.getJobId(),
                         event.getOrganizationId(),
                         workerId,
-                        event.getAttempt(),
+                        attempt,
                         Instant.now(),
                         result
                 );
@@ -77,7 +80,7 @@ public class KafkaExecutionDispatchConsumer {
                         event.getJobId(),
                         event.getOrganizationId(),
                         workerId,
-                        event.getAttempt(),
+                        attempt,
                         Instant.now(),
                         errorMsg
                 );
@@ -92,7 +95,7 @@ public class KafkaExecutionDispatchConsumer {
                     event.getJobId(),
                     event.getOrganizationId(),
                     workerId,
-                    event.getAttempt(),
+                    attempt,
                     Instant.now(),
                     "Execution error: " + e.getMessage()
             );
@@ -104,7 +107,7 @@ public class KafkaExecutionDispatchConsumer {
         return workerId;
     }
 
-    public Set<UUID> getProcessedExecutions() {
-        return processedExecutions;
+    public Set<String> getProcessedExecutionAttempts() {
+        return processedExecutionAttempts;
     }
 }
