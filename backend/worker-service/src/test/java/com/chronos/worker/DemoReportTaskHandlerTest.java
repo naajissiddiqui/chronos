@@ -1,6 +1,7 @@
-package com.chronos.worker.task;
+package com.chronos.worker;
 
 import com.chronos.worker.event.ExecutionDispatchedEvent;
+import com.chronos.worker.task.DemoReportTaskHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,5 +46,25 @@ class DemoReportTaskHandlerTest {
     @Test
     void testExecuteWithNullEventThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> handler.execute(null));
+    }
+
+    @Test
+    void testExecuteDemoReportFailTaskThrowsException() {
+        UUID executionId = UUID.randomUUID();
+        UUID jobId = UUID.randomUUID();
+        UUID orgId = UUID.randomUUID();
+
+        ExecutionDispatchedEvent event = new ExecutionDispatchedEvent(
+                executionId,
+                jobId,
+                orgId,
+                1,
+                "DEMO_REPORT_FAIL",
+                "Controlled failure payload",
+                Instant.now()
+        );
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> handler.execute(event));
+        assertTrue(ex.getMessage().contains("Controlled failure for DEMO_REPORT_FAIL"));
     }
 }

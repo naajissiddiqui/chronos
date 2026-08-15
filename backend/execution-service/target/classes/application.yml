@@ -49,3 +49,8 @@ kafka:
     execution-dispatch: ${KAFKA_TOPIC_EXECUTION_DISPATCH:execution.dispatch}
     execution-completed: ${KAFKA_TOPIC_EXECUTION_COMPLETED:execution.completed}
     execution-failed: ${KAFKA_TOPIC_EXECUTION_FAILED:execution.failed}
+    execution-retry: ${KAFKA_TOPIC_EXECUTION_RETRY:execution.retry}
+    execution-dlq: ${KAFKA_TOPIC_EXECUTION_DLQ:execution.dlq}
+
+job-service:
+  url: ${JOB_SERVICE_URL:http://localhost:8082}

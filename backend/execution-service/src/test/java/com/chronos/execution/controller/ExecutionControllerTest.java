@@ -35,6 +35,18 @@ class ExecutionControllerTest {
     @Autowired
     private ExecutionService executionService;
 
+    @org.springframework.boot.test.mock.mockito.MockBean
+    private com.chronos.execution.kafka.KafkaExecutionDispatchProducer kafkaExecutionDispatchProducer;
+
+    @org.springframework.boot.test.mock.mockito.MockBean
+    private com.chronos.execution.kafka.KafkaExecutionRetryProducer kafkaExecutionRetryProducer;
+
+    @org.springframework.boot.test.mock.mockito.MockBean
+    private com.chronos.execution.kafka.KafkaExecutionDlqProducer kafkaExecutionDlqProducer;
+
+    @org.springframework.boot.test.mock.mockito.MockBean
+    private com.chronos.execution.client.JobServiceClient jobServiceClient;
+
     private UUID orgA;
     private UUID orgB;
     private UUID jobIdA;

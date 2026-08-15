@@ -101,10 +101,35 @@ class KafkaExecutionDispatchConsumerTest {
         verify(demoReportTaskHandler, times(1)).execute(event);
         verify(resultProducer, times(1)).sendExecutionCompleted(any());
 
-        // Duplicate delivery with same executionId
+        // Duplicate delivery with same executionId and attempt
         consumer.consume(event);
         // Handler and producer should NOT be called a second time
         verify(demoReportTaskHandler, times(1)).execute(event);
         verify(resultProducer, times(1)).sendExecutionCompleted(any());
+    }
+
+    @Test
+    void testRetryAttemptWithSameExecutionIdIsProcessed() {
+        UUID executionId = UUID.randomUUID();
+        UUID jobId = UUID.randomUUID();
+        UUID orgId = UUID.randomUUID();
+
+        ExecutionDispatchedEvent attempt1 = new ExecutionDispatchedEvent(
+                executionId, jobId, orgId, 1, "DEMO_REPORT_FAIL", "Payload", Instant.now()
+        );
+        ExecutionDispatchedEvent attempt2 = new ExecutionDispatchedEvent(
+                executionId, jobId, orgId, 2, "DEMO_REPORT_FAIL", "Payload", Instant.now()
+        );
+
+        when(demoReportTaskHandler.execute(any())).thenThrow(new RuntimeException("Controlled failure"));
+
+        // Attempt 1 delivery
+        consumer.consume(attempt1);
+        verify(resultProducer, times(1)).sendExecutionFailed(any());
+
+        // Attempt 2 delivery (retry with same executionId, attempt=2)
+        consumer.consume(attempt2);
+        // Should process attempt 2 and send second failure event
+        verify(resultProducer, times(2)).sendExecutionFailed(any());
     }
 }
