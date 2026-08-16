@@ -1,4 +1,0 @@
-com\chronos\execution\controller\ExecutionControllerTest.class
-com\chronos\execution\ExecutionServiceApplicationTests.class
-com\chronos\execution\kafka\KafkaJobTriggerConsumerTest.class
-com\chronos\execution\service\ExecutionServiceTest.class

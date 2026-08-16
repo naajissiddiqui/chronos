@@ -1,6 +1,0 @@
-com\chronos\scheduler\service\CronCalculationServiceTest.class
-com\chronos\scheduler\service\JobSchedulerServiceTest.class
-com\chronos\scheduler\kafka\KafkaJobTriggerConsumerTest.class
-com\chronos\scheduler\scheduler\JobPollingSchedulerTest.class
-com\chronos\scheduler\SchedulerServiceApplicationTests.class
-com\chronos\scheduler\kafka\KafkaJobTriggerProducerTest.class

@@ -1,7 +1,0 @@
-com\chronos\worker\event\ExecutionCompletedEvent.class
-com\chronos\worker\kafka\KafkaWorkerResultProducer.class
-com\chronos\worker\event\ExecutionDispatchedEvent.class
-com\chronos\worker\task\DemoReportTaskHandler.class
-com\chronos\worker\event\ExecutionFailedEvent.class
-com\chronos\worker\kafka\KafkaExecutionDispatchConsumer.class
-com\chronos\worker\WorkerServiceApplication.class
