@@ -29,8 +29,14 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 scheduler:
-  polling-interval-ms: 5000
+  polling-interval-ms: 99999999
+
+outbox:
+  publisher:
+    interval-ms: 99999999
 
 kafka:
   topics:
     job-triggered: job.triggered
+
+

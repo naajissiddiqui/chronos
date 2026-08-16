@@ -1,5 +1,6 @@
 C:\chronos\backend\scheduler-service\src\test\java\com\chronos\scheduler\kafka\KafkaJobTriggerConsumerTest.java
 C:\chronos\backend\scheduler-service\src\test\java\com\chronos\scheduler\kafka\KafkaJobTriggerProducerTest.java
+C:\chronos\backend\scheduler-service\src\test\java\com\chronos\scheduler\publisher\OutboxPublisherTest.java
 C:\chronos\backend\scheduler-service\src\test\java\com\chronos\scheduler\scheduler\JobPollingSchedulerTest.java
 C:\chronos\backend\scheduler-service\src\test\java\com\chronos\scheduler\SchedulerServiceApplicationTests.java
 C:\chronos\backend\scheduler-service\src\test\java\com\chronos\scheduler\service\CronCalculationServiceTest.java

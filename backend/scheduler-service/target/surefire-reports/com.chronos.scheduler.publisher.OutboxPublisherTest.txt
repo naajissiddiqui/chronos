@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.chronos.scheduler.publisher.OutboxPublisherTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 38.81 s -- in com.chronos.scheduler.publisher.OutboxPublisherTest
