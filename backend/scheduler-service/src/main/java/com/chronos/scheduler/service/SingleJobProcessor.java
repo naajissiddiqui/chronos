@@ -7,8 +7,11 @@ import com.chronos.scheduler.event.JobTriggeredEvent;
 import com.chronos.scheduler.repository.JobRepository;
 import com.chronos.scheduler.repository.OutboxRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,15 +27,27 @@ public class SingleJobProcessor {
     private final OutboxRepository outboxRepository;
     private final CronCalculationService cronCalculationService;
     private final ObjectMapper objectMapper;
+    private final MeterRegistry meterRegistry;
+
+    @Autowired
+    public SingleJobProcessor(JobRepository jobRepository,
+                              OutboxRepository outboxRepository,
+                              CronCalculationService cronCalculationService,
+                              ObjectMapper objectMapper,
+                              MeterRegistry meterRegistry) {
+        this.jobRepository = jobRepository;
+        this.outboxRepository = outboxRepository;
+        this.cronCalculationService = cronCalculationService;
+        this.objectMapper = objectMapper;
+        this.meterRegistry = meterRegistry;
+    }
+
 
     public SingleJobProcessor(JobRepository jobRepository,
                               OutboxRepository outboxRepository,
                               CronCalculationService cronCalculationService,
                               ObjectMapper objectMapper) {
-        this.jobRepository = jobRepository;
-        this.outboxRepository = outboxRepository;
-        this.cronCalculationService = cronCalculationService;
-        this.objectMapper = objectMapper;
+        this(jobRepository, outboxRepository, cronCalculationService, objectMapper, null);
     }
 
     @Transactional
@@ -85,7 +100,14 @@ public class SingleJobProcessor {
 
                 outboxRepository.saveAndFlush(outboxEvent);
                 logger.info("Transactional outbox event created in DB: eventId={}, jobId={}", eventId, job.getId());
+                if (meterRegistry != null) {
+                    Counter.builder("scheduler_jobs_triggered_total")
+                            .description("Total jobs triggered by scheduler")
+                            .register(meterRegistry)
+                            .increment();
+                }
                 return true;
+
             } else {
                 logger.warn("Job schedule update skipped (already updated or modified): jobId={}", job.getId());
                 return false;

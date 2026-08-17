@@ -5,6 +5,7 @@ import com.chronos.scheduler.event.JobTriggeredEvent;
 import com.chronos.scheduler.kafka.KafkaJobTriggerProducer;
 import com.chronos.scheduler.repository.JobRepository;
 import com.chronos.scheduler.repository.OutboxRepository;
+import com.chronos.scheduler.scheduler.JobPollingScheduler;
 import com.chronos.scheduler.service.JobSchedulerService;
 import com.chronos.scheduler.service.OutboxService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,6 +52,11 @@ class OutboxPublisherTest {
 
     @MockBean
     private KafkaJobTriggerProducer kafkaJobTriggerProducer;
+
+    @MockBean
+    private JobPollingScheduler jobPollingScheduler;
+
+
 
     private UUID orgId;
 

@@ -1,5 +1,8 @@
 package com.chronos.worker.service;
 
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
+
 import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +29,7 @@ public class WorkerHeartbeatService {
     @Autowired
     public WorkerHeartbeatService(
             StringRedisTemplate redisTemplate,
+            MeterRegistry meterRegistry,
             @Value("${worker.id:worker-local-1}") String workerId,
             @Value("${worker.heartbeat.interval-ms:5000}") long heartbeatIntervalMs,
             @Value("${worker.heartbeat.ttl-seconds:15}") long heartbeatTtlSeconds) {
@@ -33,7 +37,22 @@ public class WorkerHeartbeatService {
         this.workerId = workerId;
         this.heartbeatIntervalMs = heartbeatIntervalMs;
         this.heartbeatTtlSeconds = heartbeatTtlSeconds;
+
+        if (meterRegistry != null) {
+            Gauge.builder("workers_online", this, service -> service.isWorkerOnline(service.getWorkerId()) ? 1.0 : 0.0)
+                    .description("Current worker online status (1 = ONLINE, 0 = OFFLINE)")
+                    .register(meterRegistry);
+        }
     }
+
+    public WorkerHeartbeatService(
+            StringRedisTemplate redisTemplate,
+            String workerId,
+            long heartbeatIntervalMs,
+            long heartbeatTtlSeconds) {
+        this(redisTemplate, null, workerId, heartbeatIntervalMs, heartbeatTtlSeconds);
+    }
+
 
     @Scheduled(fixedRateString = "${worker.heartbeat.interval-ms:5000}")
     public boolean publishHeartbeat() {

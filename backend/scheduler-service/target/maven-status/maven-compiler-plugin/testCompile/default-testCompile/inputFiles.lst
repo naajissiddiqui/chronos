@@ -6,3 +6,4 @@ C:\chronos\backend\scheduler-service\src\test\java\com\chronos\scheduler\Schedul
 C:\chronos\backend\scheduler-service\src\test\java\com\chronos\scheduler\service\CronCalculationServiceTest.java
 C:\chronos\backend\scheduler-service\src\test\java\com\chronos\scheduler\service\JobSchedulerServiceTest.java
 C:\chronos\backend\scheduler-service\src\test\java\com\chronos\scheduler\service\SchedulerLockServiceTest.java
+C:\chronos\backend\scheduler-service\src\test\java\com\chronos\scheduler\service\SchedulerMetricsTest.java

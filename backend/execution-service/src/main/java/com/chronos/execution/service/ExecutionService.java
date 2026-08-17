@@ -11,16 +11,22 @@ import com.chronos.execution.kafka.KafkaExecutionDispatchProducer;
 import com.chronos.execution.kafka.KafkaExecutionDlqProducer;
 import com.chronos.execution.kafka.KafkaExecutionRetryProducer;
 import com.chronos.execution.repository.ExecutionRepository;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,18 +39,32 @@ public class ExecutionService {
     private final KafkaExecutionRetryProducer kafkaExecutionRetryProducer;
     private final KafkaExecutionDlqProducer kafkaExecutionDlqProducer;
     private final JobServiceClient jobServiceClient;
+    private final MeterRegistry meterRegistry;
+
+    @Autowired
+    public ExecutionService(ExecutionRepository executionRepository,
+                            KafkaExecutionDispatchProducer kafkaExecutionDispatchProducer,
+                            KafkaExecutionRetryProducer kafkaExecutionRetryProducer,
+                            KafkaExecutionDlqProducer kafkaExecutionDlqProducer,
+                            JobServiceClient jobServiceClient,
+                            MeterRegistry meterRegistry) {
+
+        this.executionRepository = executionRepository;
+        this.kafkaExecutionDispatchProducer = kafkaExecutionDispatchProducer;
+        this.kafkaExecutionRetryProducer = kafkaExecutionRetryProducer;
+        this.kafkaExecutionDlqProducer = kafkaExecutionDlqProducer;
+        this.jobServiceClient = jobServiceClient;
+        this.meterRegistry = meterRegistry;
+    }
 
     public ExecutionService(ExecutionRepository executionRepository,
                             KafkaExecutionDispatchProducer kafkaExecutionDispatchProducer,
                             KafkaExecutionRetryProducer kafkaExecutionRetryProducer,
                             KafkaExecutionDlqProducer kafkaExecutionDlqProducer,
                             JobServiceClient jobServiceClient) {
-        this.executionRepository = executionRepository;
-        this.kafkaExecutionDispatchProducer = kafkaExecutionDispatchProducer;
-        this.kafkaExecutionRetryProducer = kafkaExecutionRetryProducer;
-        this.kafkaExecutionDlqProducer = kafkaExecutionDlqProducer;
-        this.jobServiceClient = jobServiceClient;
+        this(executionRepository, kafkaExecutionDispatchProducer, kafkaExecutionRetryProducer, kafkaExecutionDlqProducer, jobServiceClient, null);
     }
+
 
     @Transactional
     public Optional<Execution> createExecutionFromEvent(JobTriggeredEvent event) {
@@ -74,6 +94,7 @@ public class ExecutionService {
             Execution saved = executionRepository.saveAndFlush(execution);
             logger.info("Execution created: executionId={}, jobId={}, organizationId={}, status=PENDING",
                     saved.getId(), saved.getJobId(), saved.getOrganizationId());
+            incrementCounter("executions_created_total", "Total executions created");
 
             String taskType = "DEMO_REPORT";
             if (event.getPriority() != null && event.getPriority().toUpperCase().contains("FAIL")) {
@@ -126,6 +147,8 @@ public class ExecutionService {
 
         executionRepository.saveAndFlush(execution);
         logger.info("Execution completed: executionId={}, status=SUCCEEDED, workerId={}", execution.getId(), execution.getWorkerId());
+        incrementCounter("executions_succeeded_total", "Total executions succeeded");
+        recordExecutionDuration(execution);
     }
 
     @Transactional
@@ -173,6 +196,7 @@ public class ExecutionService {
 
             executionRepository.saveAndFlush(execution);
             logger.info("Retry scheduled: executionId={}, nextAttempt={}, retryAt={}", execution.getId(), nextAttempt, retryAt);
+            incrementCounter("executions_retried_total", "Total executions retried");
 
             String taskType = "DEMO_REPORT";
             if (event.getErrorMessage() != null && event.getErrorMessage().contains("DEMO_REPORT_FAIL")) {
@@ -199,6 +223,8 @@ public class ExecutionService {
 
             executionRepository.saveAndFlush(execution);
             logger.info("Max retries exhausted: executionId={}", execution.getId());
+            incrementCounter("executions_failed_total", "Total executions failed");
+            recordExecutionDuration(execution);
 
             ExecutionDlqEvent dlqEvent = new ExecutionDlqEvent(
                     execution.getId(),
@@ -212,8 +238,30 @@ public class ExecutionService {
             );
             kafkaExecutionDlqProducer.sendExecutionDlq(dlqEvent);
             logger.info("Published to DLQ: executionId={}", execution.getId());
+            incrementCounter("executions_dead_lettered_total", "Total executions dead lettered");
         }
     }
+
+    private void incrementCounter(String name, String description) {
+        if (meterRegistry != null) {
+            Counter.builder(name).description(description).register(meterRegistry).increment();
+        }
+    }
+
+    private void recordExecutionDuration(Execution execution) {
+        Instant startTime = execution.getCreatedAt() != null ? execution.getCreatedAt() : execution.getScheduledAt();
+        if (meterRegistry != null && startTime != null && execution.getCompletedAt() != null) {
+            long durationMillis = Duration.between(startTime, execution.getCompletedAt()).toMillis();
+            if (durationMillis >= 0) {
+                Timer.builder("execution_duration")
+                        .description("Duration of completed or failed executions")
+                        .register(meterRegistry)
+                        .record(durationMillis, TimeUnit.MILLISECONDS);
+            }
+        }
+    }
+
+
 
     @Transactional(readOnly = true)
     public List<ExecutionResponse> getExecutionsForOrganization(UUID organizationId) {

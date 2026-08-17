@@ -6,6 +6,8 @@ import com.chronos.job.entity.JobPriority;
 import com.chronos.job.entity.JobStatus;
 import com.chronos.job.exception.ResourceNotFoundException;
 import com.chronos.job.repository.JobRepository;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.scheduling.support.CronExpression;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +23,11 @@ import java.util.UUID;
 public class JobService {
 
     private final JobRepository jobRepository;
+    private final MeterRegistry meterRegistry;
 
-    public JobService(JobRepository jobRepository) {
+    public JobService(JobRepository jobRepository, MeterRegistry meterRegistry) {
         this.jobRepository = jobRepository;
+        this.meterRegistry = meterRegistry;
     }
 
     @Transactional
@@ -50,6 +54,7 @@ public class JobService {
         );
 
         Job saved = jobRepository.save(job);
+        Counter.builder("jobs_created_total").description("Total jobs created").register(meterRegistry).increment();
         return JobResponse.fromEntity(saved);
     }
 
@@ -99,6 +104,11 @@ public class JobService {
         job.setEnabled(request.getStatus() == JobStatus.ACTIVE);
 
         Job updated = jobRepository.save(job);
+        Counter.builder("jobs_status_changes_total")
+                .description("Total job status changes")
+                .tag("status", request.getStatus() != null ? request.getStatus().name() : "UNKNOWN")
+                .register(meterRegistry)
+                .increment();
         return JobResponse.fromEntity(updated);
     }
 
@@ -107,7 +117,9 @@ public class JobService {
         Job job = jobRepository.findByIdAndOrganizationId(jobId, organizationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Job not found with ID: " + jobId));
         jobRepository.delete(job);
+        Counter.builder("jobs_deleted_total").description("Total jobs deleted").register(meterRegistry).increment();
     }
+
 
     private void validateScheduleAndTimezone(String schedule, String timezone) {
         if (!CronExpression.isValidExpression(schedule)) {

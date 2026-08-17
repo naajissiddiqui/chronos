@@ -1,5 +1,8 @@
 package com.chronos.scheduler.service;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ public class SchedulerLockService {
             "end";
 
     private final StringRedisTemplate redisTemplate;
+    private final MeterRegistry meterRegistry;
     private final String instanceId;
     private final String lockKey;
     private final long lockTtlSeconds;
@@ -32,18 +36,29 @@ public class SchedulerLockService {
     @Autowired
     public SchedulerLockService(
             StringRedisTemplate redisTemplate,
+            MeterRegistry meterRegistry,
             @Value("${scheduler.lock.key:scheduler:lock}") String lockKey,
             @Value("${scheduler.lock.ttl-seconds:10}") long lockTtlSeconds) {
-        this(redisTemplate, UUID.randomUUID().toString(), lockKey, lockTtlSeconds);
+        this(redisTemplate, meterRegistry, UUID.randomUUID().toString(), lockKey, lockTtlSeconds);
     }
-
 
     public SchedulerLockService(
             StringRedisTemplate redisTemplate,
             String instanceId,
             String lockKey,
             long lockTtlSeconds) {
+        this(redisTemplate, null, instanceId, lockKey, lockTtlSeconds);
+    }
+
+
+    public SchedulerLockService(
+            StringRedisTemplate redisTemplate,
+            MeterRegistry meterRegistry,
+            String instanceId,
+            String lockKey,
+            long lockTtlSeconds) {
         this.redisTemplate = redisTemplate;
+        this.meterRegistry = meterRegistry;
         this.instanceId = instanceId;
         this.lockKey = lockKey;
         this.lockTtlSeconds = lockTtlSeconds;
@@ -59,6 +74,7 @@ public class SchedulerLockService {
 
             if (Boolean.TRUE.equals(acquired)) {
                 logger.info("Scheduler instance {} acquired leader lock '{}' (TTL: {}s)", instanceId, lockKey, lockTtlSeconds);
+                incrementCounter("scheduler_lock_acquisitions_total", "Total scheduler lock acquisitions");
                 return true;
             }
 
@@ -68,17 +84,27 @@ public class SchedulerLockService {
                 Boolean renewed = redisTemplate.expire(lockKey, Duration.ofSeconds(lockTtlSeconds));
                 if (Boolean.TRUE.equals(renewed)) {
                     logger.debug("Scheduler instance {} renewed lock '{}' (TTL: {}s)", instanceId, lockKey, lockTtlSeconds);
+                    incrementCounter("scheduler_lock_acquisitions_total", "Total scheduler lock acquisitions");
                     return true;
                 }
             }
 
             logger.debug("Scheduler instance {} failed to acquire lock '{}' (currently held by {})", instanceId, lockKey, currentOwner);
+            incrementCounter("scheduler_lock_misses_total", "Total scheduler lock misses");
             return false;
         } catch (Exception e) {
             logger.warn("Redis unavailable during scheduler lock acquisition/renewal for key '{}': {}", lockKey, e.getMessage());
+            incrementCounter("scheduler_lock_misses_total", "Total scheduler lock misses");
             return false;
         }
     }
+
+    private void incrementCounter(String name, String description) {
+        if (meterRegistry != null) {
+            Counter.builder(name).description(description).register(meterRegistry).increment();
+        }
+    }
+
 
     public boolean releaseLock() {
         try {
