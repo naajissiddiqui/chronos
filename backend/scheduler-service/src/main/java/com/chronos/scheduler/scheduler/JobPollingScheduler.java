@@ -1,6 +1,7 @@
 package com.chronos.scheduler.scheduler;
 
 import com.chronos.scheduler.service.JobSchedulerService;
+import com.chronos.scheduler.service.SchedulerLockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,14 +13,21 @@ public class JobPollingScheduler {
     private static final Logger logger = LoggerFactory.getLogger(JobPollingScheduler.class);
 
     private final JobSchedulerService jobSchedulerService;
+    private final SchedulerLockService schedulerLockService;
 
-    public JobPollingScheduler(JobSchedulerService jobSchedulerService) {
+    public JobPollingScheduler(JobSchedulerService jobSchedulerService, SchedulerLockService schedulerLockService) {
         this.jobSchedulerService = jobSchedulerService;
+        this.schedulerLockService = schedulerLockService;
     }
 
     @Scheduled(fixedDelayString = "${scheduler.polling-interval-ms:5000}")
     public void pollDueJobs() {
         try {
+            if (!schedulerLockService.tryAcquireOrRenewLock()) {
+                logger.debug("Scheduler instance {} did not acquire lock. Skipping job polling cycle.", schedulerLockService.getInstanceId());
+                return;
+            }
+
             int count = jobSchedulerService.processDueJobs();
             if (count > 0) {
                 logger.info("Job polling run completed. Processed {} due job(s).", count);
@@ -29,3 +37,4 @@ public class JobPollingScheduler {
         }
     }
 }
+

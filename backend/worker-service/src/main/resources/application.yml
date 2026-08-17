@@ -21,8 +21,17 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
 
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
 worker:
   id: ${WORKER_ID:worker-local-1}
+  heartbeat:
+    interval-ms: ${WORKER_HEARTBEAT_INTERVAL_MS:5000}
+    ttl-seconds: ${WORKER_HEARTBEAT_TTL_SECONDS:15}
+
 
 management:
   endpoints:

@@ -37,6 +37,11 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
 
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
 management:
   endpoints:
     web:
@@ -45,6 +50,10 @@ management:
 
 scheduler:
   polling-interval-ms: 5000
+  lock:
+    key: ${SCHEDULER_LOCK_KEY:scheduler:lock}
+    ttl-seconds: ${SCHEDULER_LOCK_TTL_SECONDS:10}
+
 
 outbox:
   publisher:

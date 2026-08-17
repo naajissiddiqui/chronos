@@ -13,8 +13,17 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
 worker:
   id: worker-local-1
+  heartbeat:
+    interval-ms: 5000
+    ttl-seconds: 15
+
 
 kafka:
   topics:
