@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.chronos.scheduler.SchedulerServiceApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.713 s -- in com.chronos.scheduler.SchedulerServiceApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.976 s -- in com.chronos.scheduler.SchedulerServiceApplicationTests
