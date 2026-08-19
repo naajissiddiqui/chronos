@@ -11,16 +11,30 @@ spring:
         - id: auth-service-route
           uri: ${gateway.services.auth-url:http://localhost:8081}
           predicates:
-            - Path=/api/v1/auth/**
+            - Path=/api/v1/auth/**, /api/v1/api-keys/**
         - id: job-service-route
           uri: ${gateway.services.job-url:http://localhost:8082}
           predicates:
             - Path=/api/v1/jobs/**
+        - id: execution-service-route
+          uri: ${gateway.services.execution-url:http://localhost:8085}
+          predicates:
+            - Path=/api/v1/executions/**
+        - id: notification-service-route
+          uri: ${gateway.services.notification-url:http://localhost:8087}
+          predicates:
+            - Path=/api/v1/notifications/**
+
+jwt:
+  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
 
 gateway:
   services:
     auth-url: ${AUTH_SERVICE_URL:http://localhost:8081}
+    auth-internal-url: ${AUTH_INTERNAL_SERVICE_URL:http://localhost:8081}
     job-url: ${JOB_SERVICE_URL:http://localhost:8082}
+    execution-url: ${EXECUTION_SERVICE_URL:http://localhost:8085}
+    notification-url: ${NOTIFICATION_SERVICE_URL:http://localhost:8087}
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
 
@@ -36,4 +50,3 @@ management:
   endpoint:
     health:
       show-details: always
-

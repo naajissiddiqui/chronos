@@ -7,24 +7,24 @@ public class ErrorResponse {
 
     private int status;
     private String message;
-    private Instant timestamp;
+    private String timestamp;
     private Map<String, String> errors;
 
     public ErrorResponse() {
-        this.timestamp = Instant.now();
+        this.timestamp = Instant.now().toString();
     }
 
     public ErrorResponse(int status, String message) {
         this.status = status;
         this.message = message;
-        this.timestamp = Instant.now();
+        this.timestamp = Instant.now().toString();
     }
 
     public ErrorResponse(int status, String message, Map<String, String> errors) {
         this.status = status;
         this.message = message;
         this.errors = errors;
-        this.timestamp = Instant.now();
+        this.timestamp = Instant.now().toString();
     }
 
     public int getStatus() {
@@ -43,11 +43,11 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public Instant getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Instant timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
