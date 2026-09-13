@@ -12,12 +12,12 @@ export default function CreateJobPage() {
   const queryClient = useQueryClient();
 
   const [name, setName] = useState('sync-user-analytics');
-  const [description, setDescription] = useState('Describe what this job does and any important operational notes...');
+  const [description, setDescription] = useState('Synchronize customer analytics and usage data to warehouse');
   const [queue, setQueue] = useState('analytics');
   const [maxRetries, setMaxRetries] = useState(3);
-  const [schedule, setSchedule] = useState('0 */6 * * *');
+  const [schedule, setSchedule] = useState('0 */5 * * * *');
   const [timezone, setTimezone] = useState('UTC');
-  const [defaultPayload, setDefaultPayload] = useState('{\n  \n}');
+  const [defaultPayload, setDefaultPayload] = useState('{\n  "batchSize": 500,\n  "dryRun": false\n}');
   const [timeoutMs, setTimeoutMs] = useState(300000);
   const [concurrency, setConcurrency] = useState(1);
   const [skipIfRunning, setSkipIfRunning] = useState(true);
@@ -25,12 +25,12 @@ export default function CreateJobPage() {
   const [uniqueJobs, setUniqueJobs] = useState(true);
 
   const cronPresets = [
-    { label: 'Every hour', cron: '0 * * * *' },
-    { label: 'Every 6h', cron: '0 */6 * * *' },
-    { label: 'Daily at 2am', cron: '0 2 * * *' },
-    { label: 'Weekly Mon', cron: '0 8 * * MON' },
-    { label: 'Monthly', cron: '0 0 1 * *' },
-    { label: 'Every 5m', cron: '*/5 * * * *' },
+    { label: 'Every 5m', cron: '0 */5 * * * *' },
+    { label: 'Every 15m', cron: '0 */15 * * * *' },
+    { label: 'Every hour', cron: '0 0 * * * *' },
+    { label: 'Every 6h', cron: '0 0 */6 * * *' },
+    { label: 'Daily at 2am', cron: '0 0 2 * * *' },
+    { label: 'Weekly Mon', cron: '0 0 8 * * MON' },
   ];
 
   const createJobMutation = useMutation({

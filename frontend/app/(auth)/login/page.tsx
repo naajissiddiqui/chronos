@@ -20,11 +20,18 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const res = await authService.login({ email, password });
-      setAuth(res.user, res.token);
+      const token = res.accessToken || res.token;
+      setAuth(res.user, token);
       toast.success('Successfully logged in');
       router.push('/dashboard');
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Invalid credentials');
+      const responseData = err.response?.data;
+      if (responseData?.errors && typeof responseData.errors === 'object') {
+        const errorMessages = Object.values(responseData.errors).join(', ');
+        toast.error(errorMessages || responseData.message || 'Invalid credentials');
+      } else {
+        toast.error(responseData?.message || 'Invalid credentials');
+      }
     } finally {
       setIsLoading(false);
     }

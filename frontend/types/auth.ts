@@ -1,14 +1,21 @@
 export interface User {
   id: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
   fullName?: string;
   organizationId: string;
+  organizationName?: string;
+  role?: string;
   roles?: string[];
 }
 
 export interface AuthResponse {
-  token: string;
+  accessToken: string;
+  token?: string;
   refreshToken?: string;
+  tokenType?: string;
+  expiresIn?: number;
   user: User;
 }
 
@@ -20,8 +27,9 @@ export interface LoginRequest {
 export interface RegisterRequest {
   email: string;
   password?: string;
-  fullName: string;
-  orgName: string;
+  firstName: string;
+  lastName: string;
+  organizationName: string;
 }
 
 export interface ApiKey {

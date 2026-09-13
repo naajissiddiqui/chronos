@@ -44,3 +44,4 @@ application-local.yml*
 
 **/target/
 **/build/
+start_commands.txt
