@@ -19,6 +19,7 @@
 
     <properties>
         <java.version>21</java.version>
+        <exec.mainClass>com.chronos.tests.load.ChronosBenchmarkRunner</exec.mainClass>
     </properties>
 
     <dependencies>
@@ -89,6 +90,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <mainClass>${exec.mainClass}</mainClass>
+                    <classpathScope>test</classpathScope>
+                </configuration>
             </plugin>
         </plugins>
     </build>

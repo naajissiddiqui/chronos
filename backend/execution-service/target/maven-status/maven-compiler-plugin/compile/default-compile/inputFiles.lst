@@ -1,4 +1,5 @@
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\client\JobServiceClient.java
+C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\config\KafkaConfig.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\config\TenantInterceptor.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\config\WebConfig.java
 C:\chronos\backend\execution-service\src\main\java\com\chronos\execution\controller\ExecutionController.java

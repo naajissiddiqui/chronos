@@ -101,7 +101,7 @@ public class ExecutionService {
                 taskType = "DEMO_REPORT_FAIL";
             }
 
-            // Dispatch execution to Kafka ONLY AFTER successful DB persistence
+            // Dispatch execution to Kafka ONLY AFTER transaction has committed to DB
             ExecutionDispatchedEvent dispatchEvent = new ExecutionDispatchedEvent(
                     saved.getId(),
                     saved.getJobId(),
@@ -111,7 +111,19 @@ public class ExecutionService {
                     "Demo report payload for jobId=" + saved.getJobId(),
                     Instant.now()
             );
-            kafkaExecutionDispatchProducer.sendExecutionDispatched(dispatchEvent);
+
+            if (org.springframework.transaction.support.TransactionSynchronizationManager.isActualTransactionActive()) {
+                org.springframework.transaction.support.TransactionSynchronizationManager.registerSynchronization(
+                        new org.springframework.transaction.support.TransactionSynchronization() {
+                            @Override
+                            public void afterCommit() {
+                                kafkaExecutionDispatchProducer.sendExecutionDispatched(dispatchEvent);
+                            }
+                        }
+                );
+            } else {
+                kafkaExecutionDispatchProducer.sendExecutionDispatched(dispatchEvent);
+            }
 
             return Optional.of(saved);
         } catch (DataIntegrityViolationException e) {
@@ -128,6 +140,13 @@ public class ExecutionService {
         }
 
         Optional<Execution> opt = executionRepository.findById(event.getExecutionId());
+        if (opt.isEmpty()) {
+            for (int retry = 0; retry < 5; retry++) {
+                try { Thread.sleep(50); } catch (InterruptedException ignored) { Thread.currentThread().interrupt(); break; }
+                opt = executionRepository.findById(event.getExecutionId());
+                if (opt.isPresent()) break;
+            }
+        }
         if (opt.isEmpty()) {
             logger.warn("Received completion event for non-existent executionId={}", event.getExecutionId());
             return;
@@ -158,6 +177,13 @@ public class ExecutionService {
         }
 
         Optional<Execution> opt = executionRepository.findById(event.getExecutionId());
+        if (opt.isEmpty()) {
+            for (int retry = 0; retry < 5; retry++) {
+                try { Thread.sleep(50); } catch (InterruptedException ignored) { Thread.currentThread().interrupt(); break; }
+                opt = executionRepository.findById(event.getExecutionId());
+                if (opt.isPresent()) break;
+            }
+        }
         if (opt.isEmpty()) {
             logger.warn("Received failure event for non-existent executionId={}", event.getExecutionId());
             return;

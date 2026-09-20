@@ -33,9 +33,7 @@ spring:
       group-id: ${KAFKA_CONSUMER_GROUP_ID:chronos-scheduler-test-consumer}
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "*"
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
   data:
     redis:
@@ -54,7 +52,7 @@ management:
 
 
 scheduler:
-  polling-interval-ms: 5000
+  polling-interval-ms: 1000
   lock:
     key: ${SCHEDULER_LOCK_KEY:scheduler:lock}
     ttl-seconds: ${SCHEDULER_LOCK_TTL_SECONDS:10}
@@ -67,4 +65,3 @@ outbox:
 kafka:
   topics:
     job-triggered: job.triggered
-

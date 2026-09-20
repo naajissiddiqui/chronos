@@ -11,19 +11,19 @@ spring:
         - id: auth-service-route
           uri: ${gateway.services.auth-url:http://localhost:8081}
           predicates:
-            - Path=/api/v1/auth/**, /api/v1/api-keys/**
+            - Path=/api/v1/auth, /api/v1/auth/**, /api/v1/api-keys, /api/v1/api-keys/**
         - id: job-service-route
           uri: ${gateway.services.job-url:http://localhost:8082}
           predicates:
-            - Path=/api/v1/jobs/**
+            - Path=/api/v1/jobs, /api/v1/jobs/**
         - id: execution-service-route
           uri: ${gateway.services.execution-url:http://localhost:8084}
           predicates:
-            - Path=/api/v1/executions/**
+            - Path=/api/v1/executions, /api/v1/executions/**, /api/v1/jobs/{jobId}/executions
         - id: notification-service-route
           uri: ${gateway.services.notification-url:http://localhost:8087}
           predicates:
-            - Path=/api/v1/notifications/**
+            - Path=/api/v1/notifications, /api/v1/notifications/**
 
 jwt:
   secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
