@@ -54,75 +54,48 @@ Unlike traditional monolithic schedulers (e.g. Quartz in a single instance) that
 Chronos leverages an event-driven microservices architecture communicating asynchronously over Apache Kafka, coordinated via Redis distributed locks and worker registries, and persisted across tenant-partitioned PostgreSQL databases.
 
 ```mermaid
-flowchart TD
-    subgraph Clients["Clients & Edge Tier"]
-        UI["🖥️ Chronos Next.js Frontend<br/>(Port 3000)"]
-        EXT["🌐 External API Consumers / SDKs"]
+flowchart LR
+    %% 1. Ingress Tier
+    subgraph Ingress["Ingress Tier"]
+        UI["🖥️ Next.js Web UI<br/><code>:3000</code>"]
+        API["🌐 REST Clients / SDKs"]
+        GW["🚪 API Gateway<br/><code>:8080</code>"]
+        UI --> GW
+        API --> GW
     end
 
-    subgraph EdgeGateway["API Gateway Tier"]
-        GW["🚪 Spring Cloud Gateway<br/>(Port 8080)<br/>• JWT Validation<br/>• Rate Limiting & Routing<br/>• Tenant Context Extraction"]
+    %% 2. Microservices Tier
+    subgraph Services["Microservices Tier"]
+        AUTH["🔐 Auth<br/><code>:8081</code>"]
+        JOB["📋 Jobs<br/><code>:8082</code>"]
+        SCHED["⏰ Scheduler<br/><code>:8083</code>"]
+        EXEC["⚙️ Execution<br/><code>:8084</code>"]
+        WORKER["👷 Worker Fleet<br/><code>:8085+</code>"]
+        NOTIF["🔔 Notification<br/><code>:8087</code>"]
     end
 
-    subgraph CoreServices["Core Backend Microservices"]
-        AUTH["🔐 Auth Service<br/>(Port 8081)<br/>• JWT Tokens & Refresh<br/>• RBAC & API Keys"]
-        JOB["📋 Job Service<br/>(Port 8082)<br/>• Job Definitions & CRUD<br/>• Cron Parsing & Validation"]
-        SCHED["⏰ Scheduler Service<br/>(Port 8083)<br/>• Redis Leader Election<br/>• Due Job Polling Engine<br/>• Transactional Outbox"]
-        EXEC["⚙️ Execution Service<br/>(Port 8084)<br/>• Event Idempotency Filter<br/>• Execution Lifecycle Engine<br/>• Exponential Backoff & DLQ"]
-        WORKER["👷 Worker Service Fleet<br/>(Port 8085+)<br/>• Heartbeat & Liveness (Redis)<br/>• Task Handlers (HTTP/Cmd)<br/>• Multi-Instance Concurrency"]
-        NOTIF["🔔 Notification Service<br/>(Port 8087)<br/>• Webhook Dispatcher<br/>• Alerts & Event Streams"]
+    %% 3. Event Bus & Storage Tier
+    subgraph Infra["Event Streaming & Data Tier"]
+        KAFKA[("📨 Apache Kafka<br/>Topics: job.triggered, dispatch, completed, dlq")]
+        REDIS[("⚡ Redis 7.0<br/>Leader Lock & Heartbeats")]
+        PG[("🐘 PostgreSQL 16<br/>Transactional Outbox & State")]
     end
 
-    subgraph DataAndEventStreaming["Data, Caching & Event Streaming"]
-        KAFKA["📨 Apache Kafka (KRaft Mode)<br/>• job.triggered<br/>• execution.dispatch<br/>• execution.completed / failed<br/>• execution.retry / dlq"]
-        REDIS["⚡ Redis 7.0 (In-Memory Data Store)<br/>• Leader Lock: scheduler:lock<br/>• Worker Registry & Heartbeat TTLs"]
-        PG[("🐘 PostgreSQL / Data Stores<br/>• Outbox Events<br/>• Job Definitions<br/>• Execution History & Logs<br/>• Notifications & Users")]
-    end
+    %% Ingress to Services
+    GW -->|"Auth & Jobs"| AUTH & JOB
+    GW -->|"Executions & Alerts"| EXEC & NOTIF
 
-    subgraph ObservabilityStack["Observability & Telemetry Tier"]
-        PROM["📈 Prometheus (Port 9090)<br/>Scrapes /actuator/prometheus"]
-        GRAF["📊 Grafana (Port 3005)<br/>Executive & Engineering Dashboards"]
-    end
+    %% Event Driven Pipeline
+    SCHED -->|"1. Outbox Flush"| KAFKA
+    KAFKA -->|"2. Trigger"| EXEC
+    EXEC -->|"3. Dispatch"| KAFKA
+    KAFKA -->|"4. Execute"| WORKER
+    WORKER -->|"5. Results"| KAFKA
+    KAFKA -->|"6. Events"| NOTIF
 
-    %% Client flows
-    UI -->|"HTTP / REST"| GW
-    EXT -->|"HTTP / REST"| GW
-
-    %% Gateway routes
-    GW -->|"/api/v1/auth/**"| AUTH
-    GW -->|"/api/v1/jobs/**"| JOB
-    GW -->|"/api/v1/executions/**"| EXEC
-    GW -->|"/api/v1/notifications/**"| NOTIF
-
-    %% Database connections
-    AUTH -.-> PG
-    JOB -.-> PG
-    SCHED -.-> PG
-    EXEC -.-> PG
-    NOTIF -.-> PG
-
-    %% Distributed coordination
-    SCHED -->|"Leader Lock TTL (10s)"| REDIS
-    WORKER -->|"Heartbeat TTL (15s)"| REDIS
-
-    %% Event pipeline
-    SCHED -->|"Outbox Flush"| KAFKA
-    KAFKA -->|"job.triggered"| EXEC
-    EXEC -->|"execution.dispatch"| KAFKA
-    KAFKA -->|"execution.dispatch"| WORKER
-    WORKER -->|"execution.completed / failed"| KAFKA
-    KAFKA -->|"execution.*"| EXEC
-    KAFKA -->|"execution.completed / failed"| NOTIF
-    EXEC -->|"Max Retries Exceeded (DLQ)"| KAFKA
-
-    %% Metrics
-    AUTH -.->|"Actuator Metrics"| PROM
-    JOB -.-> PROM
-    SCHED -.-> PROM
-    EXEC -.-> PROM
-    WORKER -.-> PROM
-    NOTIF -.-> PROM
-    PROM --> GRAF
+    %% Distributed Locks & DB
+    SCHED & WORKER -.->|"Locks / Heartbeats"| REDIS
+    AUTH & JOB & SCHED & EXEC -.->|"ACID Persistence"| PG
 ```
 
 ---
