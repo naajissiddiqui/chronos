@@ -32,17 +32,14 @@ public class JobSchedulerService {
             return 0;
         }
 
-        int processedCount = 0;
-        for (Job job : dueJobs) {
+        int processedCount = (int) dueJobs.parallelStream().filter(job -> {
             try {
-                boolean success = singleJobProcessor.processSingleJob(job, now);
-                if (success) {
-                    processedCount++;
-                }
+                return singleJobProcessor.processSingleJob(job, now);
             } catch (Exception e) {
                 logger.error("Failed to process single job jobId={}: {}", job.getId(), e.getMessage());
+                return false;
             }
-        }
+        }).count();
         return processedCount;
     }
 

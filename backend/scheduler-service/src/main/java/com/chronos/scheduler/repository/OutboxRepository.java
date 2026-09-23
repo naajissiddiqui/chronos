@@ -15,6 +15,7 @@ import java.util.UUID;
 @Repository
 public interface OutboxRepository extends JpaRepository<OutboxEvent, UUID> {
 
+    List<OutboxEvent> findTop500ByStatusOrderByCreatedAtAsc(OutboxStatus status);
     List<OutboxEvent> findTop10ByStatusOrderByCreatedAtAsc(OutboxStatus status);
 
     List<OutboxEvent> findByStatus(OutboxStatus status);
@@ -33,6 +34,14 @@ public interface OutboxRepository extends JpaRepository<OutboxEvent, UUID> {
            "o.publishedAt = :publishedAt, o.updatedAt = :now WHERE o.id = :id")
     int markAsPublished(
             @Param("id") UUID id,
+            @Param("publishedAt") Instant publishedAt,
+            @Param("now") Instant now);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE OutboxEvent o SET o.status = com.chronos.scheduler.entity.OutboxStatus.PUBLISHED, " +
+           "o.publishedAt = :publishedAt, o.updatedAt = :now WHERE o.id IN :ids")
+    int markBatchAsPublished(
+            @Param("ids") List<UUID> ids,
             @Param("publishedAt") Instant publishedAt,
             @Param("now") Instant now);
 

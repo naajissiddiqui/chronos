@@ -52,7 +52,7 @@ management:
 
 
 scheduler:
-  polling-interval-ms: 1000
+  polling-interval-ms: 200
   lock:
     key: ${SCHEDULER_LOCK_KEY:scheduler:lock}
     ttl-seconds: ${SCHEDULER_LOCK_TTL_SECONDS:10}
@@ -60,7 +60,7 @@ scheduler:
 
 outbox:
   publisher:
-    interval-ms: 1000
+    interval-ms: 200
 
 kafka:
   topics:

@@ -7,16 +7,26 @@ import com.chronos.tests.load.generator.JobLoadGenerator;
 import com.chronos.tests.load.metrics.PipelineMetricsCollector;
 import com.chronos.tests.load.reporter.BenchmarkReporter;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ChronosBenchmarkRunner {
 
     public static PipelineMetricsCollector.FinalBenchmarkMetrics run(BenchmarkConfig config) {
+        // Authenticate / register dedicated benchmark tenant upfront
+        JobLoadGenerator jobGenerator = new JobLoadGenerator(config);
+        jobGenerator.authenticate();
+
         System.out.println("\n=======================================================");
         System.out.println("  CHRONOS DISTRIBUTED SYSTEM BENCHMARK & LOAD TEST");
         System.out.println("=======================================================");
         System.out.println("Mode:           " + config.getScenario().name());
+        System.out.println("Trigger:        " + (config.getTriggerMode() == BenchmarkConfig.PipelineTriggerMode.SCHEDULER ?
+                "SCHEDULER_E2E (Job Service -> PostgreSQL Outbox -> Scheduler Service -> Kafka -> Execution Service -> Worker)" :
+                "KAFKA_DIRECT (Direct Kafka injection -> Execution Service -> Worker)"));
         System.out.println("Run ID:         " + config.getRunId());
         System.out.println("Tenant Org ID:  " + config.getOrganizationId());
         System.out.println("Target Jobs:    " + config.getJobs());
@@ -30,9 +40,8 @@ public class ChronosBenchmarkRunner {
         PipelineMetricsCollector metricsCollector = new PipelineMetricsCollector(config);
         metricsCollector.captureInitialPrometheusMetrics();
 
-        // 1. Generate Jobs
+        // 1. Generate Jobs via API Gateway / Job Service
         System.out.println("[Phase 1/3] Submitting Jobs via API Gateway / Job Service...");
-        JobLoadGenerator jobGenerator = new JobLoadGenerator(config);
         JobLoadGenerator.JobCreationResult jobResult = jobGenerator.generateJobs((curr, total) -> {
             BenchmarkReporter.renderProgressBar("Creating Jobs", curr, total);
         });
@@ -42,21 +51,25 @@ public class ChronosBenchmarkRunner {
                 jobResult.getThroughputJobsPerSec(), jobResult.getAvgLatency() > 0 ? (long) jobResult.getAvgLatency() : 0);
 
         List<UUID> jobIds = jobResult.getCreatedJobIds();
-        if (jobIds.isEmpty()) {
-            // Create fallback UUIDs if services are in stub/offline mode
-            for (int i = 0; i < config.getJobs(); i++) {
-                jobIds.add(UUID.randomUUID());
+        Map<UUID, Instant> dispatchTimestamps = new ConcurrentHashMap<>();
+
+        // 2. Dispatch / Await Execution Pipeline Workload
+        if (config.getTriggerMode() == BenchmarkConfig.PipelineTriggerMode.SCHEDULER) {
+            System.out.println("\n[Phase 2/3] Awaiting Scheduler Polling & Transactional Outbox Dispatch...");
+            System.out.println(" -> Real Pipeline: Job Service -> PostgreSQL Outbox -> Scheduler Service -> Kafka -> Execution Service -> Worker");
+            Instant now = Instant.now();
+            for (UUID jid : jobIds) {
+                dispatchTimestamps.put(jid, now);
             }
+        } else {
+            System.out.println("\n[Phase 2/3] Dispatching Direct Kafka Workload (job.triggered)...");
+            ExecutionPipelineTrigger trigger = new ExecutionPipelineTrigger(config);
+            ExecutionPipelineTrigger.TriggerResult triggerResult = trigger.triggerPipelineExecutions(jobIds, (curr, total) -> {
+                BenchmarkReporter.renderProgressBar("Dispatching Execs", curr, total);
+            });
+            dispatchTimestamps.putAll(triggerResult.getDispatchTimestamps());
+            System.out.printf(" -> Workload Dispatched: %d executions generated%n", triggerResult.getDispatched());
         }
-
-        // 2. Dispatch Execution Workload
-        System.out.println("\n[Phase 2/3] Dispatching Execution Pipeline Workload (Kafka job.triggered)...");
-        ExecutionPipelineTrigger trigger = new ExecutionPipelineTrigger(config);
-        ExecutionPipelineTrigger.TriggerResult triggerResult = trigger.triggerPipelineExecutions(jobIds, (curr, total) -> {
-            BenchmarkReporter.renderProgressBar("Dispatching Execs", curr, total);
-        });
-
-        System.out.printf(" -> Workload Dispatched: %d executions generated%n", triggerResult.getDispatched());
 
         // 3. Track Execution Pipeline State
         System.out.println("\n[Phase 3/3] Tracking Execution Pipeline Progress...");
@@ -68,7 +81,7 @@ public class ChronosBenchmarkRunner {
                 (long) jobResult.getAvgLatency(),
                 jobResult.getP95Latency(),
                 config.getExecutions(),
-                triggerResult.getDispatchTimestamps(),
+                dispatchTimestamps,
                 snapshot -> {
                     System.out.printf("\r[PROGRESS] Completed: %-4d | Failed: %-3d | Retrying: %-3d | Pending: %-4d | Rate: %5.1f exec/s | Elapsed: %4.1fs",
                             snapshot.completed, snapshot.failed, snapshot.retrying, snapshot.pending,
@@ -120,6 +133,20 @@ public class ChronosBenchmarkRunner {
                             System.err.println("Unknown scenario: " + args[i] + ". Using custom.");
                         }
                     }
+                    break;
+                case "--trigger":
+                case "--pipeline-trigger":
+                    if (i + 1 < args.length) {
+                        String t = args[++i].toUpperCase();
+                        if (t.contains("KAFKA")) {
+                            config.setTriggerMode(BenchmarkConfig.PipelineTriggerMode.KAFKA_DIRECT);
+                        } else {
+                            config.setTriggerMode(BenchmarkConfig.PipelineTriggerMode.SCHEDULER);
+                        }
+                    }
+                    break;
+                case "--direct-kafka":
+                    config.setTriggerMode(BenchmarkConfig.PipelineTriggerMode.KAFKA_DIRECT);
                     break;
                 case "--jobs":
                 case "-j":
@@ -204,6 +231,8 @@ public class ChronosBenchmarkRunner {
         System.out.println();
         System.out.println("Options:");
         System.out.println("  --mode <SMALL|MEDIUM|LARGE|STRESS|FAILURE>  Benchmark scenario preset");
+        System.out.println("  --trigger <SCHEDULER|KAFKA_DIRECT>         Pipeline trigger mode (default: SCHEDULER for true E2E)");
+        System.out.println("  --direct-kafka                             Use direct Kafka injection (micro-benchmark mode)");
         System.out.println("  --jobs <N>                                 Number of jobs to create");
         System.out.println("  --executions <N>                           Number of executions to generate");
         System.out.println("  --concurrency <N>                          HTTP client worker thread concurrency (default: 10)");

@@ -57,14 +57,18 @@ public class BenchmarkReporter {
         System.out.println("-------------");
         System.out.printf("%-24s %s%n", "Run ID:", config.getRunId());
         System.out.printf("%-24s %s%n", "Scenario:", config.getScenario().name());
+        System.out.printf("%-24s %s%n", "Trigger Pipeline:",
+                config.getTriggerMode() == BenchmarkConfig.PipelineTriggerMode.SCHEDULER ?
+                        "SCHEDULER (True E2E: Job Service -> Outbox -> Scheduler -> Kafka -> Execution -> Worker)" :
+                        "KAFKA_DIRECT (Direct Kafka Injection)");
         System.out.printf("%-24s %d%n", "Jobs requested:", m.jobsRequested);
         System.out.printf("%-24s %d%n", "Executions requested:", m.executionsRequested);
         System.out.printf("%-24s %.1f%%%n", "Target Failure Rate:", config.getFailureRate() * 100.0);
         System.out.printf("%-24s %s%n", "Active Workers:", String.join(", ", m.activeWorkersDetected));
         System.out.printf("%-24s %s%n", "Environment:", "localhost");
         System.out.println();
-        System.out.println("Results");
-        System.out.println("-------");
+        System.out.println("Run-Level Benchmark Results (Tenant Isolated)");
+        System.out.println("---------------------------------------------");
         System.out.printf("%-24s %d (API errors: %d)%n", "Jobs created:", m.jobsCreated, m.jobApiErrors);
         System.out.printf("%-24s %d%n", "Executions completed:", m.executionsCompleted);
         System.out.printf("%-24s %d%n", "Executions failed:", m.executionsFailed);
@@ -80,7 +84,7 @@ public class BenchmarkReporter {
         System.out.printf("%-24s %6.2f executions/sec%n", "Peak Processing Rate:", m.peakRateExecPerSec);
         System.out.printf("%-24s %6.2f jobs/sec%n", "Job Creation Rate:", m.jobCreationThroughput);
         System.out.println();
-        System.out.println("Execution latency (Dispatch -> Completed)");
+        System.out.println("Execution Latency (Dispatch -> Completed)");
         System.out.println("------------------------------------------");
         if (m.executionsCompleted + m.executionsFailed > 0) {
             System.out.printf("%-24s %d ms%n", "p50:", m.p50ExecutionLatencyMs);
@@ -93,8 +97,8 @@ public class BenchmarkReporter {
             System.out.println("N/A - metric unavailable (no executions completed)");
         }
         System.out.println();
-        System.out.println("HTTP / API latency (Job Service)");
-        System.out.println("--------------------------------");
+        System.out.println("HTTP / API Latency (Job Service via Gateway)");
+        System.out.println("--------------------------------------------");
         if (m.jobsCreated > 0) {
             System.out.printf("%-24s %d ms%n", "Job Creation Avg:", m.jobCreationAvgLatencyMs);
             System.out.printf("%-24s %d ms%n", "Job Creation p95:", m.jobCreationP95LatencyMs);
@@ -115,10 +119,11 @@ public class BenchmarkReporter {
         }
 
         if (m.prometheusDelta != null && !m.prometheusDelta.isEmpty()) {
-            System.out.println("Prometheus Metrics (Delta)");
-            System.out.println("--------------------------");
+            System.out.println("Global Service Prometheus Counter Deltas (Cluster-Wide Activity During Test Window)");
+            System.out.println("----------------------------------------------------------------------------------");
+            System.out.println("[Note: These represent global JVM-level Micrometer counter increases across the entire cluster during the test window, distinct from the isolated benchmark run results above]");
             for (Map.Entry<String, Double> entry : m.prometheusDelta.entrySet()) {
-                System.out.printf("%-30s +%.0f%n", entry.getKey() + ":", entry.getValue());
+                System.out.printf("%-40s +%.0f%n", entry.getKey() + ":", entry.getValue());
             }
             System.out.println();
         }

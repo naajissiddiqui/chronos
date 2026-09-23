@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class OutboxPublisher {
@@ -30,7 +31,7 @@ public class OutboxPublisher {
         this.objectMapper = objectMapper;
     }
 
-    @Scheduled(fixedDelayString = "${outbox.publisher.interval-ms:1000}")
+    @Scheduled(fixedDelayString = "${outbox.publisher.interval-ms:200}")
     public int processPendingEvents() {
         try {
             // Clean up any stale PROCESSING events (e.g. from crashed publisher instances)
@@ -41,26 +42,28 @@ public class OutboxPublisher {
                 return 0;
             }
 
-            int publishedCount = 0;
-            for (OutboxEvent outboxEvent : pendingEvents) {
+            java.util.List<UUID> successfulIds = java.util.Collections.synchronizedList(new java.util.ArrayList<>());
+            
+            pendingEvents.parallelStream().forEach(outboxEvent -> {
                 boolean claimed = outboxService.claimEvent(outboxEvent.getId());
-                if (!claimed) {
-                    logger.debug("Skipping outbox eventId={} (claimed by another publisher instance)", outboxEvent.getId());
-                    continue;
+                if (claimed) {
+                    try {
+                        JobTriggeredEvent event = objectMapper.readValue(outboxEvent.getPayload(), JobTriggeredEvent.class);
+                        kafkaJobTriggerProducer.sendJobTriggeredSync(event);
+                        successfulIds.add(outboxEvent.getId());
+                    } catch (Exception e) {
+                        logger.warn("Failed to publish outbox eventId={}: {}. Leaving event pending for retry.",
+                                outboxEvent.getId(), e.getMessage());
+                        outboxService.handlePublishFailure(outboxEvent.getId(), e.getMessage());
+                    }
                 }
+            });
 
-                try {
-                    JobTriggeredEvent event = objectMapper.readValue(outboxEvent.getPayload(), JobTriggeredEvent.class);
-                    kafkaJobTriggerProducer.sendJobTriggeredSync(event);
-                    outboxService.markPublished(outboxEvent.getId(), Instant.now());
-                    publishedCount++;
-                } catch (Exception e) {
-                    logger.warn("Failed to publish outbox eventId={}: {}. Leaving event pending for retry.",
-                            outboxEvent.getId(), e.getMessage());
-                    outboxService.handlePublishFailure(outboxEvent.getId(), e.getMessage());
-                }
+            if (!successfulIds.isEmpty()) {
+                outboxService.markBatchPublished(successfulIds, Instant.now());
             }
-            return publishedCount;
+
+            return successfulIds.size();
         } catch (Exception e) {
             logger.error("Error in OutboxPublisher scheduled processing cycle: {}", e.getMessage(), e);
             return 0;

@@ -49,7 +49,7 @@ public class LocalInfraRunner {
             brokerProps.put("transaction.state.log.min.isr", "1");
             brokerProps.put("offsets.topic.replication.factor", "1");
 
-            kafkaBroker = new org.springframework.kafka.test.EmbeddedKafkaZKBroker(1, false,
+            kafkaBroker = new org.springframework.kafka.test.EmbeddedKafkaZKBroker(1, false, 4,
                     "job.triggered",
                     "execution.dispatch",
                     "execution.completed",

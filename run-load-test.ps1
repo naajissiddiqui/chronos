@@ -4,6 +4,9 @@ param(
     [ValidateSet("Small", "Medium", "Large", "Stress", "Failure")]
     [string]$Mode = "Small",
 
+    [ValidateSet("Scheduler", "DirectKafka")]
+    [string]$TriggerMode = "Scheduler",
+
     [int]$Jobs = 0,
     [int]$Executions = 0,
     [int]$Concurrency = 10,
@@ -58,7 +61,7 @@ if ($Help) {
 }
 
 # Build CLI argument list
-$cliArgs = @("--mode", $Mode.ToUpper())
+$cliArgs = @("--mode", $Mode.ToUpper(), "--trigger", $TriggerMode.ToUpper())
 
 if ($Jobs -gt 0) { $cliArgs += @("--jobs", $Jobs) }
 if ($Executions -gt 0) { $cliArgs += @("--executions", $Executions) }

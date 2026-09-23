@@ -27,7 +27,7 @@ public class OutboxService {
 
     @Transactional(readOnly = true)
     public List<OutboxEvent> getPendingEvents() {
-        return outboxRepository.findTop10ByStatusOrderByCreatedAtAsc(OutboxStatus.PENDING);
+        return outboxRepository.findTop500ByStatusOrderByCreatedAtAsc(OutboxStatus.PENDING);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -47,6 +47,14 @@ public class OutboxService {
         Instant now = Instant.now();
         outboxRepository.markAsPublished(eventId, publishedAt, now);
         logger.info("Outbox event marked as PUBLISHED: eventId={}", eventId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void markBatchPublished(List<UUID> eventIds, Instant publishedAt) {
+        if (eventIds == null || eventIds.isEmpty()) return;
+        Instant now = Instant.now();
+        outboxRepository.markBatchAsPublished(eventIds, publishedAt, now);
+        logger.info("Batch outbox events marked as PUBLISHED: count={}", eventIds.size());
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)

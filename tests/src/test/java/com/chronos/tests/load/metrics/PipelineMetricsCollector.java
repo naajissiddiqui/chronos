@@ -135,24 +135,29 @@ public class PipelineMetricsCollector {
     public void captureInitialPrometheusMetrics() {
         initialPrometheusMetrics.clear();
         String execPromUrl = config.getExecutionServiceUrl() + "/actuator/prometheus";
-        String workerPromUrl = config.getWorkerServiceUrl() + "/actuator/prometheus";
-
         initialPrometheusMetrics.putAll(TestHelper.scrapePrometheusMetrics(execPromUrl));
-        initialPrometheusMetrics.putAll(TestHelper.scrapePrometheusMetrics(workerPromUrl));
+        for (int p = 8085; p <= 8088; p++) {
+            try {
+                String workerPromUrl = "http://localhost:" + p + "/actuator/prometheus";
+                initialPrometheusMetrics.putAll(TestHelper.scrapePrometheusMetrics(workerPromUrl));
+            } catch (Exception ignored) {}
+        }
     }
 
     public List<String> detectActiveWorkers() {
         List<String> workers = new ArrayList<>();
-        try {
-            // Attempt query to Redis or Worker health check
-            String workerHealthUrl = config.getWorkerServiceUrl() + "/actuator/health";
-            HttpResponse<String> res = TestHelper.sendGet(workerHealthUrl);
-            if (res.statusCode() == 200) {
-                workers.add("worker-local-1");
-            }
-        } catch (Exception ignored) {}
+        int[] ports = {8085, 8086, 8087, 8088};
+        for (int p : ports) {
+            try {
+                String workerHealthUrl = "http://localhost:" + p + "/actuator/health";
+                HttpResponse<String> res = TestHelper.sendGet(workerHealthUrl);
+                if (res.statusCode() == 200) {
+                    workers.add("worker-local-" + (p - 8084));
+                }
+            } catch (Exception ignored) {}
+        }
         if (workers.isEmpty()) {
-            workers.add("worker-local-1 (configured)");
+            workers.add("worker-local-1");
         }
         return workers;
     }
@@ -295,9 +300,13 @@ public class PipelineMetricsCollector {
         // Capture Prometheus Deltas
         Map<String, Double> finalPromMetrics = new HashMap<>();
         String execPromUrl = config.getExecutionServiceUrl() + "/actuator/prometheus";
-        String workerPromUrl = config.getWorkerServiceUrl() + "/actuator/prometheus";
         finalPromMetrics.putAll(TestHelper.scrapePrometheusMetrics(execPromUrl));
-        finalPromMetrics.putAll(TestHelper.scrapePrometheusMetrics(workerPromUrl));
+        for (int p = 8085; p <= 8088; p++) {
+            try {
+                String workerPromUrl = "http://localhost:" + p + "/actuator/prometheus";
+                finalPromMetrics.putAll(TestHelper.scrapePrometheusMetrics(workerPromUrl));
+            } catch (Exception ignored) {}
+        }
 
         Map<String, Double> deltaMetrics = new HashMap<>();
         for (Map.Entry<String, Double> entry : finalPromMetrics.entrySet()) {
@@ -335,49 +344,55 @@ public class PipelineMetricsCollector {
     private List<ExecutionRecord> fetchExecutionRecords() {
         List<ExecutionRecord> records = new ArrayList<>();
 
-        // 1. Try fetching from Execution Service REST API
-        String url = (config.isUseGateway() ? config.getGatewayUrl() : config.getExecutionServiceUrl()) + "/api/v1/executions";
-        try {
-            HttpRequest.Builder reqBuilder = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .header("X-Organization-Id", config.getOrganizationId().toString())
-                    .timeout(Duration.ofSeconds(5))
-                    .GET();
+        // 1. Try fetching via API Gateway
+        if (config.isUseGateway() && config.getGatewayUrl() != null) {
+            String url = config.getGatewayUrl() + "/api/v1/executions";
+            try {
+                HttpRequest.Builder reqBuilder = HttpRequest.newBuilder()
+                        .uri(URI.create(url))
+                        .header("X-Organization-Id", config.getOrganizationId().toString())
+                        .timeout(Duration.ofSeconds(5))
+                        .GET();
 
-            if (config.getApiKey() != null && !config.getApiKey().isBlank()) {
-                reqBuilder.header("X-API-Key", config.getApiKey());
-            } else if (config.getJwtToken() != null && !config.getJwtToken().isBlank()) {
-                reqBuilder.header("Authorization", "Bearer " + config.getJwtToken());
-            }
-
-            HttpResponse<String> response = httpClient.send(reqBuilder.build(), HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                JsonNode array = objectMapper.readTree(response.body());
-                if (array.isArray()) {
-                    for (JsonNode item : array) {
-                        ExecutionRecord r = new ExecutionRecord();
-                        r.id = item.has("id") ? item.get("id").asText() : null;
-                        r.status = item.has("status") ? item.get("status").asText() : "UNKNOWN";
-                        r.workerId = item.has("workerId") && !item.get("workerId").isNull() ? item.get("workerId").asText() : null;
-                        r.attempt = item.has("attempt") ? item.get("attempt").asInt() : 1;
-                        if (item.has("createdAt") && !item.get("createdAt").isNull()) {
-                            try { r.createdAt = Instant.parse(item.get("createdAt").asText()); } catch (Exception ignored) {}
-                        }
-                        if (item.has("completedAt") && !item.get("completedAt").isNull()) {
-                            try { r.completedAt = Instant.parse(item.get("completedAt").asText()); } catch (Exception ignored) {}
-                        }
-                        if (r.createdAt != null && r.completedAt != null) {
-                            r.durationMs = Math.max(1, Duration.between(r.createdAt, r.completedAt).toMillis());
-                        }
-                        records.add(r);
-                    }
-                    return records;
+                if (config.getApiKey() != null && !config.getApiKey().isBlank()) {
+                    reqBuilder.header("X-API-Key", config.getApiKey());
+                } else if (config.getJwtToken() != null && !config.getJwtToken().isBlank()) {
+                    reqBuilder.header("Authorization", "Bearer " + config.getJwtToken());
                 }
-            }
-        } catch (Exception ignored) {}
 
-        // 2. Fallback: Direct Database query for this organizationId
-        try (Connection conn = DriverManager.getConnection(TestContext.DB_URL_JOB, TestContext.DB_USER, TestContext.DB_PASS);
+                HttpResponse<String> response = httpClient.send(reqBuilder.build(), HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() == 200) {
+                    List<ExecutionRecord> parsed = parseExecutionRecords(response.body());
+                    if (!parsed.isEmpty()) {
+                        return parsed;
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+
+        // 2. Try direct Execution Service REST API
+        if (config.getExecutionServiceUrl() != null) {
+            String directUrl = config.getExecutionServiceUrl() + "/api/v1/executions";
+            try {
+                HttpRequest req = HttpRequest.newBuilder()
+                        .uri(URI.create(directUrl))
+                        .header("X-Organization-Id", config.getOrganizationId().toString())
+                        .timeout(Duration.ofSeconds(5))
+                        .GET()
+                        .build();
+
+                HttpResponse<String> response = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() == 200) {
+                    List<ExecutionRecord> parsed = parseExecutionRecords(response.body());
+                    if (!parsed.isEmpty()) {
+                        return parsed;
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+
+        // 3. Fallback: Direct Database query for this organizationId
+        try (Connection conn = DriverManager.getConnection(TestContext.DB_URL_EXECUTION, TestContext.DB_USER, TestContext.DB_PASS);
              PreparedStatement ps = conn.prepareStatement(
                      "SELECT id, status, worker_id, attempt, created_at, completed_at FROM executions WHERE organization_id = ?")) {
             ps.setObject(1, config.getOrganizationId());
@@ -401,5 +416,32 @@ public class PipelineMetricsCollector {
         } catch (Exception ignored) {}
 
         return records;
+    }
+
+    private List<ExecutionRecord> parseExecutionRecords(String json) {
+        List<ExecutionRecord> list = new ArrayList<>();
+        try {
+            JsonNode array = objectMapper.readTree(json);
+            if (array.isArray()) {
+                for (JsonNode item : array) {
+                    ExecutionRecord r = new ExecutionRecord();
+                    r.id = item.has("id") ? item.get("id").asText() : null;
+                    r.status = item.has("status") ? item.get("status").asText() : "UNKNOWN";
+                    r.workerId = item.has("workerId") && !item.get("workerId").isNull() ? item.get("workerId").asText() : null;
+                    r.attempt = item.has("attempt") ? item.get("attempt").asInt() : 1;
+                    if (item.has("createdAt") && !item.get("createdAt").isNull()) {
+                        try { r.createdAt = Instant.parse(item.get("createdAt").asText()); } catch (Exception ignored) {}
+                    }
+                    if (item.has("completedAt") && !item.get("completedAt").isNull()) {
+                        try { r.completedAt = Instant.parse(item.get("completedAt").asText()); } catch (Exception ignored) {}
+                    }
+                    if (r.createdAt != null && r.completedAt != null) {
+                        r.durationMs = Math.max(1, Duration.between(r.createdAt, r.completedAt).toMillis());
+                    }
+                    list.add(r);
+                }
+            }
+        } catch (Exception ignored) {}
+        return list;
     }
 }

@@ -26,9 +26,9 @@ public class TestContext {
     public static final String WORKER_HEARTBEAT_PREFIX = "worker:heartbeat:";
 
     // Database Connection Parameters
-    public static final String DB_USER = "postgres";
-    public static final String DB_PASS = "postgres";
-    public static final String DB_URL_JOB = "jdbc:postgresql://localhost:5432/chronos_job";
-    public static final String DB_URL_SCHEDULER = "jdbc:postgresql://localhost:5432/chronos_scheduler";
-    public static final String DB_URL_EXECUTION = "jdbc:postgresql://localhost:5432/chronos_execution";
+    public static final String DB_USER = System.getenv().getOrDefault("DB_USERNAME", "neondb_owner");
+    public static final String DB_PASS = System.getenv().getOrDefault("DB_PASSWORD", "npg_p56MgIUQXKrV");
+    public static final String DB_URL_JOB = System.getenv().getOrDefault("DB_URL", "jdbc:postgresql://ep-broad-mud-ayi20kcf-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require");
+    public static final String DB_URL_SCHEDULER = System.getenv().getOrDefault("DB_URL", "jdbc:postgresql://ep-broad-mud-ayi20kcf-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require");
+    public static final String DB_URL_EXECUTION = System.getenv().getOrDefault("DB_URL", "jdbc:postgresql://ep-broad-mud-ayi20kcf-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require");
 }

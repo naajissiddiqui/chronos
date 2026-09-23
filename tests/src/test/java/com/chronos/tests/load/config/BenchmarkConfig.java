@@ -34,7 +34,13 @@ public class BenchmarkConfig {
         }
     }
 
+    public enum PipelineTriggerMode {
+        SCHEDULER,    // True E2E: Job Service -> DB -> Scheduler Service -> Outbox -> Kafka -> Execution -> Worker
+        KAFKA_DIRECT  // Direct Kafka injection: Benchmark -> Kafka job.triggered -> Execution -> Worker (for throughput micro-benchmarks)
+    }
+
     private Scenario scenario = Scenario.SMALL;
+    private PipelineTriggerMode triggerMode = PipelineTriggerMode.SCHEDULER;
     private int jobs = 10;
     private int executions = 10;
     private int concurrency = 10;
@@ -84,6 +90,14 @@ public class BenchmarkConfig {
 
     public void setScenario(Scenario scenario) {
         this.scenario = scenario;
+    }
+
+    public PipelineTriggerMode getTriggerMode() {
+        return triggerMode;
+    }
+
+    public void setTriggerMode(PipelineTriggerMode triggerMode) {
+        this.triggerMode = triggerMode;
     }
 
     public int getJobs() {
